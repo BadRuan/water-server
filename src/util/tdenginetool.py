@@ -10,10 +10,8 @@ class TDengineTool:
     def init_connect(self):
         try:
             c = DATABASE_CONFIG["dev"]
-            dsn = f'taosws://{c["user"]}:{c["password"]}@{c["url"]}'
+            dsn = f'taosws://{c["user"]}:{c["password"]}@{c["url"]}/{c["database"]}?timezone=UTC-8'
             self.conn = taosws.connect(dsn)
-            db = c["database"]
-            self.conn.execute(f"USE {db}")
             self.initialized = True
         except BaseException as other:
             print("exception occur")
