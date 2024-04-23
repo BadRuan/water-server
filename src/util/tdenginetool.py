@@ -1,5 +1,5 @@
 import taosws
-from config.settings import DATABASE_CONFIG
+from config.settings import DATABASE_DEV
 
 
 class TDengineTool:
@@ -9,8 +9,8 @@ class TDengineTool:
 
     def init_connect(self):
         try:
-            c = DATABASE_CONFIG["dev"]
-            dsn = f'taosws://{c["user"]}:{c["password"]}@{c["url"]}/{c["database"]}?timezone=UTC-8'
+            c = DATABASE_DEV
+            dsn = f'taosws://{c.user}:{c.password}@{c.url}:{c.port}/{c.database}'
             self.conn = taosws.connect(dsn)
             self.initialized = True
         except BaseException as other:
