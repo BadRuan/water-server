@@ -18,6 +18,6 @@
 
 ## Docker 部署
 ```shell
-docker build -t water_api:v1 .
-docker run -itd --name=water-api -p 9000:8000 --restart=always water_api:v1
+docker build -t water-api:v1 .
+docker run -itd --name=water-api -p 9000:8080 --restart=always water-api:v1
 ```
