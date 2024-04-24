@@ -15,12 +15,11 @@ STATIONS: List[Station] = [
     Station(stcd=62900600, name="裕溪闸上"),
     Station(stcd=62906500, name="清水"),
     Station(stcd=62905100, name="新桥闸上"),
-    Station(stcd=60115400, name="芜湖"),
 ]
 
 THREE_LINE: List[ThreeLine] = [
     ThreeLine(stcd=62904400, sfsw=11.5, jjsw=13.2, bzsw=15.84, name="无为大堤"),
-    ThreeLine(stcd=62904400, sfsw=9.4, jjsw=11.2, bzsw=13.4, name="城北圩"),
+    ThreeLine(stcd=60115400, sfsw=9.4, jjsw=11.2, bzsw=13.4, name="城北圩"),
     ThreeLine(stcd=62900700, sfsw=8.7, jjsw=10.7, bzsw=12.7, name="江北（沈巷）长江堤"),
     ThreeLine(stcd=62906500, sfsw=10.1, jjsw=12.1, bzsw=14.1, name="万春圈堤"),
     ThreeLine(stcd=62900700, sfsw=9.4, jjsw=11.2, bzsw=12.3, name="裕溪口江堤"),
