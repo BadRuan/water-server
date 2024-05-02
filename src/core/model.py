@@ -1,6 +1,20 @@
 from pydantic import BaseModel
 from typing import Optional
-from model.settings import Station
+
+
+# 数据库参数格式
+class Database(BaseModel):
+    url: str
+    port: int
+    user: str
+    password: str
+    database: str
+
+
+# 水文站参数格式
+class Station(BaseModel):
+    stcd: int
+    name: str
 
 
 class WaterLevel(BaseModel):
@@ -17,5 +31,5 @@ class ThreeLine(BaseModel):
     jjsw: float
     bzsw: float
     name: str
-    station_name: Optional[str] = ''
+    station_name: Optional[str] = ""
     current: Optional[float] = 0

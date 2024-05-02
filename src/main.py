@@ -1,6 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
-from dao.waterlevel import select_cruuent_waterlevel, select_threeline_waterlevel
+from core.dao import select_threeline_waterlevel
 
 
 app = FastAPI()
@@ -9,11 +9,6 @@ app = FastAPI()
 @app.get("/")
 async def index():
     return {"message": "run success"}
-
-
-@app.get("/current")
-async def current():
-    return await select_cruuent_waterlevel()
 
 
 @app.get("/threeline")

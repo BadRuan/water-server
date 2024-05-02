@@ -1,6 +1,6 @@
 from typing import List
-from config.settings import THREE_LINE
-from model.waterlevel import WaterLevel, ThreeLine
+from core.settings import THREE_LINE
+from core.model import WaterLevel, ThreeLine
 from util.tdenginetool import TDengineTool
 
 

@@ -1,6 +1,6 @@
 from typing import List
-from model.settings import Database, Station
-from model.waterlevel import ThreeLine
+from core.model import Database, Station, ThreeLine
+
 
 # 数据库参数
 DATABASE_DEV = Database(
