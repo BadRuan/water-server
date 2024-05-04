@@ -27,4 +27,14 @@ class TDengineTool:
 
     def __enter__(self):
         self.ensure_initialized()
-        return self.conn
+        return self
+
+    # 执行SQL语句
+    def execute(self, sql: str) -> int:
+        self.ensure_initialized()
+        return self.conn.execute(sql)
+
+    # 执行获取数据SQL语句
+    def query(self, sql):
+        self.ensure_initialized()
+        return self.conn.query(sql)
