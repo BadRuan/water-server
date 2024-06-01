@@ -10,10 +10,8 @@
 ## 开发进展
 1. 提供TDengine数据库中最新的水位数据API
 2. 提供三线水位数据，含最新水位数据API
-
-
-## 后续开发计划
-1. Dockerfile编写，方便部署
+3. Dockerfile编写，方便部署
+4. 虚拟环境由virtualenv转换为pipenv
 
 
 ## Docker 部署

@@ -10,5 +10,5 @@ timezone UTC-8
 timezone GMT-8
 timezone Asia/Shanghai
 ```
-均是合法的设置东八区时区的格式。
+均是合法的设置**东八区**时区的格式。
 
