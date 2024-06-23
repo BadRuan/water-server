@@ -1,5 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from core.service import get_waterlevel, save_xlsx
 from pathlib import Path
@@ -9,12 +10,7 @@ from asyncio import sleep
 app = FastAPI()
 
 
-@app.get("/")
-async def index():
-    return {"message": "run success"}
-
-
-@app.get("/table")
+@app.get("/api/table")
 async def table():
     # 获取当前文件路径
     current_file_path = Path(__file__).resolve()
@@ -36,6 +32,8 @@ async def table():
         savefilename, media_type="application/octet-stream", filename=filename
     )
 
+
+app.mount("/", StaticFiles(directory="static", html=True), name="static")
 
 if __name__ == "__main__":
     uvicorn.run(app="main:app", host="0.0.0.0", port=8080)
