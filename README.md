@@ -12,6 +12,7 @@
 2. 提供三线水位数据，含最新水位数据API
 3. Dockerfile编写，方便部署
 4. 虚拟环境由virtualenv转换为pipenv
+5. 支持动态获取今日水位表格
 
 
 ## Docker 部署

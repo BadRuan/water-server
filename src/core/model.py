@@ -11,12 +11,6 @@ class Database(BaseModel):
     database: str
 
 
-# 水文站参数格式
-class Station(BaseModel):
-    stcd: int
-    name: str
-
-
 class WaterLevel(BaseModel):
     tm: str
     current: float
@@ -24,12 +18,12 @@ class WaterLevel(BaseModel):
     name: str
 
 
-# 三线水位参数格式
-class ThreeLine(BaseModel):
+# 水文站参数格式
+class Station(BaseModel):
     stcd: int
+    name: str
     sfsw: float
     jjsw: float
     bzsw: float
-    name: str
-    station_name: Optional[str] = ""
-    current: Optional[float] = 0
+    today_8: Optional[float] = 0
+    yesterday_8: Optional[float] = 0
