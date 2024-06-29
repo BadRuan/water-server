@@ -12,14 +12,14 @@ def func(stations: List[Station], waterline_colum):
                 station.waterline.append(cow.current)
 
 
-async def get_waterlevel_mode1() -> List[Station]:
+async def get_waterlevel_1() -> List[Station]:
     stations = STATIONS
     for d in await table1_waterlevel():
         func(stations, d)
     return stations
 
 
-async def get_waterlevel_mode2() -> List[Station]:
+async def get_waterlevel_2() -> List[Station]:
     stations = STATIONS
     for d in await table2_waterlevel():
         func(stations, d)
