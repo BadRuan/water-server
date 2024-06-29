@@ -1,9 +1,10 @@
 from typing import List
 from datetime import datetime
+from pathlib import Path
 from openpyxl import load_workbook
 from openpyxl.styles import Font
-from core.settings import STATIONS
-from core.model import Station
+from core.settings import STATIONS, SF_COLOR, JJ_COLOR, BZ_COLOR
+from core.model import Station, WaterLevel
 from core.dao import (
     today8_waterlevel,
     yesterday8_waterlevel,
@@ -12,90 +13,60 @@ from core.dao import (
 )
 
 
+def filePath(source: str, dist: str):
+    # 获取当前文件路径
+    current_file_path = Path(__file__).resolve()
+    # 获取当前文件的所在目录
+    current_dir = current_file_path.parent.parent
+    file_path = current_dir / f"source/{source}.xlsx"
+    save_path = current_dir / f"dist/{dist}.xlsx"
+    # 完整路径
+    source_filename = str(file_path)
+    dist_filename = str(save_path)
+    return [source_filename, dist_filename]
+
+
 # 获取目标水位
-async def get_waterlevel() -> List[Station]:
-    today8 = await today8_waterlevel()
-    yesterday_8 = await yesterday8_waterlevel()
-    lastweek8 = await lastweek8_waterlevel()
-    lastyear8 = await lastyear8_waterlevel()
-    for station in STATIONS:
-        # 获取今天 8:00 水位
-        for today in today8:
-            if station.stcd == today.stcd:
-                station.today_8 = today.current
-        # 获取昨天 8:00 水位
-        for yesterday in yesterday_8:
-            if station.stcd == yesterday.stcd:
-                station.yesterday_8 = yesterday.current
-        # 获取上周 8:00 水位
-        for lastweek in lastweek8:
-            if station.stcd == lastweek.stcd:
-                station.lastweek_8 = lastweek.current
-        # 获取去年同期 8:00 水位
-        for lastyear in lastyear8:
-            if station.stcd == lastyear.stcd:
-                station.lastyear_8 = lastyear.current
-    return STATIONS
+async def get_waterlevel_mode1() -> List[Station]:
+    stations = STATIONS
+    today8: List[WaterLevel] = await today8_waterlevel()
+    yesterday_8: List[WaterLevel] = await yesterday8_waterlevel()
+    lastweek8: List[WaterLevel] = await lastweek8_waterlevel()
+    lastyear8: List[WaterLevel] = await lastyear8_waterlevel()
+
+    def func(stations: List[Station], waterline_colum):
+        for station in stations:  # 遍历每个测站
+            for cow in waterline_colum:  # 每列数据
+                if station.stcd == cow.stcd:
+                    station.waterline.append(cow.current)
+
+    for d in (today8, yesterday_8, lastweek8, lastyear8):
+        func(stations, d)
+
+    return stations
 
 
 # 保存为xlsx文件
-async def save_xlsx(source_file: str, save_file: str, stations: List[Station]):
+async def save_xlsx(
+    source_file: str, save_file: str, talbe_loc: List[str], stations: List[Station]
+):
     wb = load_workbook(source_file)
     ws = wb.active
     ws["A2"] = "填报日期： " + datetime.now().strftime("%Y年%m月%d日")
 
-    for row, station in zip(ws["D5:D14"], stations):
-        # 循环写入今日8:00水位
-        for cell in row:
-            cell.value = station.today_8
-            # 达到设防水位 浅蓝色
-            if station.today_8 >= station.sfsw and station.today_8 < station.jjsw:
-                cell.font = Font(color="189FA7")
-            # 达到警戒水位 深蓝色
-            elif station.today_8 >= station.jjsw and station.today_8 < station.bzsw:
-                cell.font = Font(color="0070C0")
-            # 达到保证水位 红色
-            elif station.today_8 >= station.bzsw:
-                cell.font = Font(color="C00400")
+    def func(loc: str, index: int):
+        for row, station in zip(ws[loc], stations):
+            for cell in row:
+                w_value = station.waterline[index]
+                cell.value = w_value
+                if w_value >= station.sfsw and w_value < station.jjsw:
+                    cell.font = Font(color=SF_COLOR)
+                elif w_value >= station.jjsw and w_value < station.bzsw:
+                    cell.font = Font(color=JJ_COLOR)
+                elif w_value >= station.bzsw:
+                    cell.font = Font(color=BZ_COLOR)
 
-    for row, station in zip(ws["E5:E14"], stations):
-        # 循环写入昨日8:00水位
-        for cell in row:
-            cell.value = station.yesterday_8
-            if (
-                station.yesterday_8 >= station.sfsw
-                and station.yesterday_8 < station.jjsw
-            ):
-                cell.font = Font(color="189FA7")
-            elif (
-                station.yesterday_8 >= station.jjsw
-                and station.yesterday_8 < station.bzsw
-            ):
-                cell.font = Font(color="0070C0")
-            elif station.yesterday_8 >= station.bzsw:
-                cell.font = Font(color="C00400")
-
-    for row, station in zip(ws["F5:F14"], stations):
-        for cell in row:
-            cell.value = station.lastweek_8
-            if station.lastweek_8 >= station.sfsw and station.lastweek_8 < station.jjsw:
-                cell.font = Font(color="189FA7")
-            elif (
-                station.lastweek_8 >= station.jjsw and station.lastweek_8 < station.bzsw
-            ):
-                cell.font = Font(color="0070C0")
-            elif station.lastweek_8 >= station.bzsw:
-                cell.font = Font(color="C00400")
-    for row, station in zip(ws["G5:G14"], stations):
-        for cell in row:
-            cell.value = station.lastyear_8
-            if station.lastyear_8 >= station.sfsw and station.lastyear_8 < station.jjsw:
-                cell.font = Font(color="189FA7")
-            elif (
-                station.lastyear_8 >= station.jjsw and station.lastyear_8 < station.bzsw
-            ):
-                cell.font = Font(color="0070C0")
-            elif station.lastyear_8 >= station.bzsw:
-                cell.font = Font(color="C00400")
+    for index, loc in enumerate(talbe_loc):
+        func(loc, index)
 
     wb.save(save_file)

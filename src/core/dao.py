@@ -5,14 +5,14 @@ from util.tdenginetool import TDengineTool
 
 
 # 查询指定日期的8点水位
-async def select_waterlevel(date: datetime) -> List[WaterLevel]:
-    sql = f"""SELECT `ts`, `current`, `stcd`, `name` FROM waterlevel WHERE `ts`='{date.strftime("%Y-%m-%d")} 08:00:00' """
+async def select_waterlevel(date: datetime, hour: int) -> List[WaterLevel]:
+    sql = f"""SELECT `ts`, `current`, `stcd`, `name` FROM waterlevel WHERE `ts`='{date.strftime("%Y-%m-%d")} {hour}:00:00' """
     with TDengineTool() as td:
         result = td.query(sql)
         return [
             WaterLevel(
                 tm=row[0][:-7],
-                current=row[1],
+                current=round(row[1], 2), # 水位数据保留小数点后2位
                 stcd=row[2],
                 name=row[3],
             )
@@ -23,23 +23,23 @@ async def select_waterlevel(date: datetime) -> List[WaterLevel]:
 # 查询今天8点水位
 async def today8_waterlevel() -> List[WaterLevel]:
     date_now = datetime.now()
-    return await select_waterlevel(date_now)
+    return await select_waterlevel(date_now, 8)
 
 
 # 查询昨天8点水位
 async def yesterday8_waterlevel() -> List[WaterLevel]:
     yesterday = datetime.now() - timedelta(days=1)
-    return await select_waterlevel(yesterday)
+    return await select_waterlevel(yesterday, 8)
 
 
 # 查询上周8点水位
 async def lastweek8_waterlevel() -> List[WaterLevel]:
     one_week_ago = datetime.now() - timedelta(weeks=1)
-    return await select_waterlevel(one_week_ago)
+    return await select_waterlevel(one_week_ago, 8)
 
 
 # 查询去年同期8点水位
 async def lastyear8_waterlevel() -> List[WaterLevel]:
     now = datetime.now()
     last_year = now.replace(year=now.year - 1)
-    return await select_waterlevel(last_year)
+    return await select_waterlevel(last_year, 8)

@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import List
 
 
 # 数据库参数格式
@@ -18,14 +18,11 @@ class WaterLevel(BaseModel):
     name: str
 
 
-# 水文站参数格式
+# 水位测站基础参数
 class Station(BaseModel):
     stcd: int
     name: str
     sfsw: float
     jjsw: float
     bzsw: float
-    today_8: Optional[float] = 0
-    yesterday_8: Optional[float] = 0
-    lastweek_8: Optional[float] = 0
-    lastyear_8: Optional[float] = 0
+    waterline: List[float] = []

@@ -2,6 +2,9 @@ from typing import List
 from core.model import Database, Station
 
 
+# 定义三线颜色
+SF_COLOR, JJ_COLOR, BZ_COLOR = "189FA7", "0070C0", "C00400"
+
 # 数据库参数
 DATABASE_DEV = Database(
     url="tdengine", port=6041, user="root", password="123456", database="water"
