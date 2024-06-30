@@ -2,49 +2,44 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-from core.service import get_waterlevel_1, get_waterlevel_2, get_waterlevel_3
-from core.util import filePath, save_xlsx1, save_xlsx2, save_xlsx3
 from datetime import datetime
+from util.pathtool import filePath
+from core.service import get_table1, get_table2, get_table3
+
 
 app = FastAPI()
 
 
 @app.get("/api/table1")
 async def table1():
-    stations = await get_waterlevel_1()
-    filepath = filePath("table1", "dist1")
-
-    await save_xlsx1(filepath[0], filepath[1], stations)
+    f = filePath("table1", "dist1")
+    file_path = await get_table1(f)
     return FileResponse(
-        filepath[1],
+        file_path,
         media_type="application/octet-stream",
         filename=f"""{datetime.now().strftime("%Y年%m月%d日_鸠江区三线水位测站记录表")}.xlsx""",
     )
 
 
 @app.get("/api/table2")
-async def table2():
-    stations = await get_waterlevel_2()
-    filepath = filePath("table2", "dist2")
-
-    await save_xlsx2(filepath[0], filepath[1], stations)
+async def table1():
+    f = filePath("table2", "dist2")
+    file_path = await get_table2(f)
     return FileResponse(
-        filepath[1],
+        file_path,
         media_type="application/octet-stream",
-        filename=f"""{datetime.now().strftime("%Y年%m月%d日%H时_鸠江区三线水位测站记录表")}.xlsx""",
+        filename=f"""{datetime.now().strftime("%Y年%m月%d日_鸠江区三线水位测站记录表")}.xlsx""",
     )
 
 
 @app.get("/api/table3")
 async def table3():
-    stations = await get_waterlevel_3()
-    filepath = filePath("table3", "dist3")
-
-    await save_xlsx3(filepath[0], filepath[1], stations)
+    f = filePath("table3", "dist3")
+    file_path = await get_table3(f)
     return FileResponse(
-        filepath[1],
+        file_path,
         media_type="application/octet-stream",
-        filename=f"""{datetime.now().strftime("%Y年%m月%d日%H时_鸠江区三线水位测站记录表")}.xlsx""",
+        filename=f"""{datetime.now().strftime("%Y年%m月%d日_鸠江区三线水位测站记录表")}.xlsx""",
     )
 
 
