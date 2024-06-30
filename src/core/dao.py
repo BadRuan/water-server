@@ -38,6 +38,14 @@ async def table1_waterlevel():
 async def table2_waterlevel():
     date_now = datetime.now()
     now_hour = await select_waterlevel(date_now)  # 当前时间的整点时刻数据
+    yesterday_hour = await select_waterlevel(date_now - timedelta(days=1))  # 昨日8时
+    return (now_hour, yesterday_hour)
+
+
+# 获取表3数据
+async def table3_waterlevel():
+    date_now = datetime.now()
+    now_hour = await select_waterlevel(date_now)  # 当前时间的整点时刻数据
     two_hour_ago = await select_waterlevel(
         date_now - timedelta(hours=2)
     )  # 前2小时整点时刻数据

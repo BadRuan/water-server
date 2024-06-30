@@ -2,7 +2,7 @@ from copy import deepcopy
 from typing import List
 from core.model import Station
 from core.settings import STATIONS
-from core.dao import table1_waterlevel, table2_waterlevel
+from core.dao import table1_waterlevel, table2_waterlevel, table3_waterlevel
 
 
 def func(stations: List[Station], waterline_colum):
@@ -22,5 +22,12 @@ async def get_waterlevel_1() -> List[Station]:
 async def get_waterlevel_2() -> List[Station]:
     stations = deepcopy(STATIONS)
     for d in await table2_waterlevel():
+        func(stations, d)
+    return stations
+
+
+async def get_waterlevel_3() -> List[Station]:
+    stations = deepcopy(STATIONS)
+    for d in await table3_waterlevel():
         func(stations, d)
     return stations
