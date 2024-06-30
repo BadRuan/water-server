@@ -66,3 +66,18 @@ async def table3_data() -> List[Station]:
     func(stations, await select_waterlevel(date_now - timedelta(hours=10)))
 
     return stations
+
+
+# 获取表4数据
+async def table4_data() -> List[Station]:
+    stations = deepcopy(STATIONS)
+
+    date_now = datetime.now()
+    func(stations, await select_waterlevel(date_now))
+    func(stations, await select_waterlevel(date_now - timedelta(hours=1)))
+    func(stations, await select_waterlevel(date_now - timedelta(hours=2)))
+    func(stations, await select_waterlevel(date_now - timedelta(hours=3)))
+    func(stations, await select_waterlevel(date_now - timedelta(hours=4)))
+    func(stations, await select_waterlevel(date_now - timedelta(hours=5)))
+
+    return stations

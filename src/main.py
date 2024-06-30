@@ -4,10 +4,11 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from datetime import datetime
 from util.pathtool import filePath
-from core.service import get_table1, get_table2, get_table3
+from core.service import get_table1, get_table2, get_table3, get_table4
 
 
 app = FastAPI()
+download_name: str = "%Y年%m月%d日_鸠江区三线水位测站记录表"
 
 
 @app.get("/api/table1")
@@ -17,7 +18,7 @@ async def table1():
     return FileResponse(
         file_path,
         media_type="application/octet-stream",
-        filename=f"""{datetime.now().strftime("%Y年%m月%d日_鸠江区三线水位测站记录表")}.xlsx""",
+        filename=f"""{datetime.now().strftime(download_name)}.xlsx""",
     )
 
 
@@ -28,7 +29,7 @@ async def table1():
     return FileResponse(
         file_path,
         media_type="application/octet-stream",
-        filename=f"""{datetime.now().strftime("%Y年%m月%d日_鸠江区三线水位测站记录表")}.xlsx""",
+        filename=f"""{datetime.now().strftime(download_name)}.xlsx""",
     )
 
 
@@ -39,9 +40,19 @@ async def table3():
     return FileResponse(
         file_path,
         media_type="application/octet-stream",
-        filename=f"""{datetime.now().strftime("%Y年%m月%d日_鸠江区三线水位测站记录表")}.xlsx""",
+        filename=f"""{datetime.now().strftime(download_name)}.xlsx""",
     )
 
+
+@app.get("/api/table4")
+async def table4():
+    f = filePath("table3", "dist4")
+    file_path = await get_table4(f)
+    return FileResponse(
+        file_path,
+        media_type="application/octet-stream",
+        filename=f"""{datetime.now().strftime(download_name)}.xlsx""",
+    )
 
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
 

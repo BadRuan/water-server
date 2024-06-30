@@ -1,22 +1,15 @@
-# 水位数据 API 服务
+# 鸠江水位小助手 WebServer
 
-## 项目技术栈
-- 基础语言: [Python](https://www.python.org/)
-- 框架：[FastAPI](https://fastapi.tiangolo.com/zh/)
-- 数据库: [TDEngine](https://docs.taosdata.com/)
-- 环境部署: [Docker](https://www.docker.com/)
+## 功能
 
+1. 配合数据库、爬虫，搭建Web服务
+2. 读取本地数据库，自动生成水位表
+3. 水位表有多种样式，随时获取
+4. 充分满足防汛需要
 
-## 开发进展
-1. 提供TDengine数据库中最新的水位数据API
-2. 提供三线水位数据，含最新水位数据API
-3. Dockerfile编写，方便部署
-4. 虚拟环境由virtualenv转换为pipenv
-5. 支持动态获取今日水位表格
+## 部署
 
-
-## Docker 部署
 ```shell
-docker build -t water-api:v1 .
-docker run -itd --name=water-api -p 9000:8080 --restart=always water-api:v1
+docker build -t water-server:latest .
+docker run -itd --name=water-server -p=80:80 --restart=always water-api:latest
 ```
