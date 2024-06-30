@@ -72,6 +72,7 @@ async def save_xlsx1(source_file: str, save_file: str, stations: List[Station]):
     ]
     for index, loc in enumerate(talbe_loc):
         func(index, loc)
+        
 
     wb.save(save_file)
 
@@ -79,7 +80,7 @@ async def save_xlsx1(source_file: str, save_file: str, stations: List[Station]):
 async def save_xlsx2(source_file: str, save_file: str, stations: List[Station]):
     wb = load_workbook(source_file)
     ws = wb.active
-    ws["A2"] = "填报日期： " + datetime.now().strftime("%Y年%m月%d日")
+    ws["A2"] = "填报日期： " + datetime.now().strftime("%Y年%m月%d日%H时")
     date_lsit = table2_str()
     ws['D3'] = date_lsit[0]
     ws['E3'] = date_lsit[1]
@@ -109,6 +110,7 @@ async def save_xlsx2(source_file: str, save_file: str, stations: List[Station]):
         "I5:I14",
     ]
     for index, loc in enumerate(talbe_loc):
+        # print('index: ',index,'| loc: ', loc)
         func(index, loc)
 
     wb.save(save_file)
