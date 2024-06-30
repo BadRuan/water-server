@@ -15,8 +15,13 @@ def writeColumnsHead(sheet, columns_head: ColumnsHeadModel):
 
 # 填写每列数据
 def writeCowData(sheet, loc_list, stations):
+    
+
     def func(index: int, talbe_loc: str):
         for row, station in zip(sheet[talbe_loc], stations):
+            # 解决没有数据的异常
+            if len(station.waterline) < len(loc_list):
+                station.waterline.insert(0, 0)
             for cell in row:
                 w_value = station.waterline[index]
                 cell.value = w_value
@@ -52,4 +57,3 @@ async def write_to_xlsx(
     sheet1 = writeCowData(sheet1, talbe_loc, stations)
 
     wb.save(path.dist)
-
