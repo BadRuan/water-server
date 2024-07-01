@@ -22,6 +22,7 @@ async def select_waterlevel(date: datetime) -> List[WaterLevel]:
         ]
 
 
+# 水文站数据添加到对应测站中
 def func(stations: List[Station], waterline_colum):
     for station in stations:  # 遍历每个测站
         for cow in waterline_colum:  # 每列数据
@@ -83,3 +84,14 @@ async def table4_data() -> List[Station]:
     func(stations, await select_waterlevel(date_now - timedelta(hours=5)))
 
     return stations
+
+
+# 水位数据总览
+class StableCount:
+
+    # 得到每个水文站点水位数据
+    def all_station_count(self) -> List[tuple]:
+        SQL = "SELECT name,COUNT(current) FROM waterlevel GROUP BY name"
+        with TDengineTool() as td:
+            result = td.query(SQL)
+            return [(row[0], row[1]) for row in result]

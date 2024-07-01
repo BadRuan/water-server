@@ -1,6 +1,6 @@
 from asyncio import run
-from datetime import datetime, timedelta
 from util.pathtool import filePath
+from core.dao import StableCount
 from core.service import get_table3
 
 
@@ -9,9 +9,14 @@ async def test_table():
     s = await get_table3(f)
     print(s)
 
+async def test_table_count():
+    s_obj = StableCount()
+    for i in s_obj.all_station_count():
+        print(i)
+
 
 async def main():
-    await test_table()
+    await test_table_count()
 
 
 if __name__ == "__main__":
