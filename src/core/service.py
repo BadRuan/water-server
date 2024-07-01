@@ -26,14 +26,31 @@ async def get_table1(path: PathModel) -> str:
 
 async def get_table2(path: PathModel) -> str:
     # 列头的内容
-    now_hour = datetime.now().strftime("%H")
+    def datefunc(date: datetime) -> str:
+        date = date.date()
+        today = datetime.now().date()
+        yesterday = today - timedelta(days=1)
+        if date == today:
+            return "今日"
+        elif date == yesterday:
+            return "昨日"
+        else:
+            return "***"
+        
+    str_for: str = "%H时"
+    now_hour = datetime.now()
+    two_hour_ago = now_hour - timedelta(hours=2)
+
+    str1 = datefunc(now_hour) + now_hour.strftime(str_for)
+    str2 = datefunc(now_hour) + two_hour_ago.strftime(str_for)
+
     columns_head: ColumnsHeadModel = ColumnsHeadModel(
         loc_list=["D3", "E3"],
-        titles=[f"今日{now_hour}时", f"昨日{now_hour}时"],
+        titles=[str1, str2],
     )
 
     # 水位数据位置
-    talbe_loc: List[str] = ["D5:D14", "E5:E14"]
+    talbe_loc: List[str] = ["D5:D14", "E5:E14", "F5:F14"]
 
     # 水位数据
     stations: List[Station] = await table2_data()

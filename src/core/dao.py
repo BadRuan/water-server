@@ -47,8 +47,10 @@ async def table2_data() -> List[Station]:
     stations = deepcopy(STATIONS)
 
     date_now = datetime.now()
+    today_8 = datetime.now().replace(hour=8, minute=0, second=0, microsecond=0)
     func(stations, await select_waterlevel(date_now))
-    func(stations, await select_waterlevel(date_now - timedelta(days=1)))
+    func(stations, await select_waterlevel(date_now - timedelta(hours=2)))
+    func(stations, await select_waterlevel(today_8 - timedelta(days=1)))
 
     return stations
 
