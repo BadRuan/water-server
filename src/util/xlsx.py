@@ -7,53 +7,57 @@ from core.model import PathModel, ColumnsHeadModel, Station
 
 
 # 填写每列标题
-def writeColumnsHead(sheet, columns_head: ColumnsHeadModel):
+def write_columns_head(sheet, columns_head: ColumnsHeadModel):
     for loc, title in zip(columns_head.loc_list, columns_head.titles):
         sheet[loc] = title
     return sheet
 
 
 # 填写每列数据
-def writeCowData(sheet, loc_list, stations):
-    
-
-    def func(index: int, talbe_loc: str):
-        for row, station in zip(sheet[talbe_loc], stations):
-            # 解决没有数据的异常
-            if len(station.waterline) < len(loc_list):
-                station.waterline.insert(0, 0)
-            for cell in row:
+def write_cow_data(sheet, loc_list, stations):
+    # 为每个位置填充数据
+    for loc, index in zip(loc_list, range(len(loc_list))):
+        for row, station in zip(sheet[loc], stations):
+            try:
+                # 使用安全的索引访问，防止越界错误
                 w_value = station.waterline[index]
-                cell.value = w_value
-                # 根据数值情况标注颜色
-                if w_value >= station.sfsw and w_value < station.jjsw:
-                    cell.font = Font(color=SF_COLOR)
-                elif w_value >= station.jjsw and w_value < station.bzsw:
-                    cell.font = Font(color=JJ_COLOR, bold=True)
-                elif w_value >= station.bzsw:
-                    cell.font = Font(color=BZ_COLOR, bold=True)
+            except IndexError:
+                # 如果waterline列表长度不足，则使用0填充
+                w_value = 0
+            finally:
+                row[0].value = w_value
 
-    for index, loc in enumerate(loc_list):
-        func(index, loc)
+            # 设置字体颜色和加粗样式
+            set_cell_style(row[0], w_value, station.sfsw, station.jjsw, station.bzsw)
     return sheet
+
+
+# 设置单元格样式
+def set_cell_style(cell, value, sfsw, jjsw, bzsw):
+    if value >= sfsw and value < jjsw:
+        cell.font = Font(color=SF_COLOR)
+    elif value >= jjsw and value < bzsw:
+        cell.font = Font(color=JJ_COLOR, bold=True)
+    elif value >= bzsw:
+        cell.font = Font(color=BZ_COLOR, bold=True)
 
 
 # 填写表格内容
 async def write_to_xlsx(
     path: PathModel,
     columns_head: ColumnsHeadModel,
-    talbe_loc: List[str],
+    loc_list: List[str],
     stations: List[Station],
 ):
-    wb = load_workbook(path.source)  # 读取文件
-    sheet1 = wb.active  # 默认子表
+    wb = load_workbook(path.source)  # 加载源文件
+    sheet = wb.active  # 获取活动工作表
+
     # 更新填报日期和时间
-    sheet1["A2"] = "填报日期： " + datetime.now().strftime("%Y年%m月%d日 %H时")
+    sheet["A2"] = f"填报日期：{datetime.now().strftime('%Y年%m月%d日 %H时')}"
 
     # 填写标题
-    sheet1 = writeColumnsHead(sheet1, columns_head)
+    sheet = write_columns_head(sheet, columns_head)
     # 填写对应水位数据
+    sheet = write_cow_data(sheet, loc_list, stations)
 
-    sheet1 = writeCowData(sheet1, talbe_loc, stations)
-
-    wb.save(path.dist)
+    wb.save(path.dist)  # 保存到目标路径
