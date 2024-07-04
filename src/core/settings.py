@@ -19,6 +19,6 @@ STATIONS: List[Station] = [
     Station(stcd=62900600, sfsw=9.5, jjsw=10.5, bzsw=12.0, name="裕溪河堤"),
     Station(stcd=62905100, sfsw=8.5, jjsw=9.5, bzsw=11.5, name="牛屯河堤"),
     Station(stcd=62904500, sfsw=11.5, jjsw=13.2, bzsw=14.5, name="惠生连圩堤"),
-    Station(stcd=62904500, sfsw=11.5, jjsw=13.2, bzsw=15.84, name="永定大圩堤"),
+    Station(stcd=62904500, sfsw=11.5, jjsw=13.2, bzsw=14.5, name="永定大圩堤"),
     Station(stcd=62904500, sfsw=11.0, jjsw=13.0, bzsw=13.5, name="黑沙洲、天然洲圩"),
 ]
