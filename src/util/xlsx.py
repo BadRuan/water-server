@@ -1,14 +1,14 @@
-from typing import List
+from typing import List, Dict
 from datetime import datetime
 from openpyxl import load_workbook
 from openpyxl.styles import Font
 from core.settings import SF_COLOR, JJ_COLOR, BZ_COLOR
-from core.model import PathModel, ColumnsHeadModel, Station
+from core.model import PathModel, Station
 
 
 # 填写每列标题
-def write_columns_head(sheet, columns_head: ColumnsHeadModel):
-    for loc, title in zip(columns_head.loc_list, columns_head.titles):
+def write_columns_head(sheet, table_head: Dict[str, str]):
+    for loc, title in table_head.items():
         sheet[loc] = title
     return sheet
 
@@ -45,8 +45,8 @@ def set_cell_style(cell, value, sfsw, jjsw, bzsw):
 # 填写表格内容
 async def write_to_xlsx(
     path: PathModel,
-    columns_head: ColumnsHeadModel,
-    loc_list: List[str],
+    table_head: Dict[str, str],
+    data_locs: List[str],
     stations: List[Station],
 ):
     wb = load_workbook(path.source)  # 加载源文件
@@ -56,8 +56,8 @@ async def write_to_xlsx(
     sheet["A2"] = f"填报日期：{datetime.now().strftime('%Y年%m月%d日 %H时')}"
 
     # 填写标题
-    sheet = write_columns_head(sheet, columns_head)
+    sheet = write_columns_head(sheet, table_head)
     # 填写对应水位数据
-    sheet = write_cow_data(sheet, loc_list, stations)
+    sheet = write_cow_data(sheet, data_locs, stations)
 
     wb.save(path.dist)  # 保存到目标路径

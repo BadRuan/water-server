@@ -1,10 +1,12 @@
 from asyncio import run
-from core.service import generate_time_description
+from util.pathtool import filePath
+from core.service import get_table4
 
 
 
 async def test_table():
-    s = generate_time_description(1)
+    f = filePath('table3', 'dist4')
+    s = await get_table4(f)
     print(s)
 
 

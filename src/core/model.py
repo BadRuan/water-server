@@ -17,12 +17,6 @@ class PathModel(BaseModel):
     dist: str
 
 
-# 列头
-class ColumnsHeadModel(BaseModel):
-    loc_list: List[str] = []
-    titles: List[str] = []
-
-
 class WaterLevel(BaseModel):
     tm: str
     current: float
