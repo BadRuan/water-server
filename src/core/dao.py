@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from core.model import WaterLevel, Station
 from core.settings import STATIONS
 from util.tdenginetool import TDengineTool
+from util.othertool import today_or_yesterday
 
 
 # 异步查询指定日期时间的整点水位
@@ -49,13 +50,9 @@ async def fetch_station_data(time_points: List[datetime]) -> List[Station]:
 async def table1_data() -> List[Station]:
     return await fetch_station_data(
         [
-            datetime.now().replace(
-                hour=8
-            ),  # 当前日期8点整
-            datetime.now().replace(hour=8)
-            - timedelta(days=1),  # 昨天8点整
-            datetime.now().replace(hour=8)
-            - timedelta(weeks=1),  # 一周前8点整
+            datetime.now().replace(hour=8),  # 当前日期8点整
+            datetime.now().replace(hour=8) - timedelta(days=1),  # 昨天8点整
+            datetime.now().replace(hour=8) - timedelta(weeks=1),  # 一周前8点整
             datetime.now()
             .replace(hour=8)
             .replace(year=datetime.now().year - 1),  # 去年同期8点整
@@ -65,14 +62,16 @@ async def table1_data() -> List[Station]:
 
 # 获取表2数据的异步函数
 async def table2_data() -> List[Station]:
-    return await fetch_station_data(
-        [
-            datetime.now(),  # 当前时刻
-            datetime.now() - timedelta(hours=2),  # 两小时前
-            datetime.now().replace(hour=8)
-            - timedelta(days=1),  # 昨天8点整
-        ]
-    )
+    target = [
+        datetime.now(),  # 当前时刻
+        datetime.now() - timedelta(hours=2),  # 两小时前
+    ]
+    if today_or_yesterday:
+        target.append(datetime.now().replace(hour=8))
+    else:
+        target.append(datetime.now().replace(hour=8) - timedelta(days=1))  # 昨天8点整
+
+    return await fetch_station_data(target)
 
 
 # 获取表3数据的异步函数

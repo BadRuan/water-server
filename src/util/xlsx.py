@@ -3,7 +3,8 @@ from datetime import datetime
 from openpyxl import load_workbook
 from openpyxl.styles import Font
 from core.settings import SF_COLOR, JJ_COLOR, BZ_COLOR
-from core.model import PathModel, Station
+from util.othertool import PathModel
+from core.model import Station
 
 
 # 填写每列标题

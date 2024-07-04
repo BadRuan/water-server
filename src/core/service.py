@@ -1,8 +1,9 @@
 from typing import List, Dict
 from datetime import datetime, timedelta
-from core.model import PathModel, Station
+from core.model import Station
 from core.dao import table1_data, table2_data, table3_data, table4_data
 from util.xlsx import write_to_xlsx
+from util.othertool import PathModel, filePath, today_or_yesterday
 
 
 # 定义一个生成时间描述的函数
@@ -22,16 +23,16 @@ def generate_time_description(hour_diff: int) -> str:
 
 # 定义一个获取表格数据的通用函数
 async def fetch_table_data(
-    path: PathModel, table_head: Dict[str, str], data_locs: List[str], data_func
+    pathModel: PathModel, table_head: Dict[str, str], data_locs: List[str], data_func
 ) -> str:
-
     stations: List[Station] = await data_func()
-    await write_to_xlsx(path, table_head, data_locs, stations)
-    return path.dist
+    await write_to_xlsx(pathModel, table_head, data_locs, stations)
+    return pathModel.dist
 
 
 # 获取表1数据的异步函数
-async def get_table1(path: PathModel) -> str:
+async def get_table1() -> str:
+    path: PathModel = filePath(source="table1", dist="dist1")
     # 表头信息和位置
     table_head: Dict[str, str] = {
         "D3": "今日8时",
@@ -45,19 +46,25 @@ async def get_table1(path: PathModel) -> str:
 
 
 # 获取表2数据的异步函数
-async def get_table2(path: PathModel) -> str:
+async def get_table2() -> str:
+    path: PathModel = filePath(source="table2", dist="dist2")
     # 表头信息和位置
     table_head: Dict[str, str] = {
         "D3": generate_time_description(0),
         "E3": generate_time_description(2),
-        "F3": "昨日8时",
+        "F3": "",
     }
-    data_locs: List[str] = ["D5:D14", "E5:E14","F5:F14"]
+    if today_or_yesterday:
+        table_head["F3"] = "今日8时"
+    else:
+        table_head["F3"] = "昨日8时"
+    data_locs: List[str] = ["D5:D14", "E5:E14", "F5:F14"]
     return await fetch_table_data(path, table_head, data_locs, table2_data)
 
 
 # 获取表3数据的异步函数
-async def get_table3(path: PathModel) -> str:
+async def get_table3() -> str:
+    path: PathModel = filePath(source="table3", dist="dist3")
     # 表头信息和位置
     time_description = [generate_time_description(i) for i in range(0, 12, 2)]
     table_head: Dict[str, str] = {
@@ -68,12 +75,13 @@ async def get_table3(path: PathModel) -> str:
         "H3": time_description[4],
         "I3": time_description[5],
     }
-    data_locs: List[str] = ["D5:D14", "E5:E14","F5:F14","G5:G14","H5:H14","I5:I14"]
+    data_locs: List[str] = ["D5:D14", "E5:E14", "F5:F14", "G5:G14", "H5:H14", "I5:I14"]
     return await fetch_table_data(path, table_head, data_locs, table3_data)
 
 
 # 获取表4数据的异步函数
-async def get_table4(path: PathModel) -> str:
+async def get_table4() -> str:
+    path: PathModel = filePath(source="table3", dist="dist4")
     # 表头信息和位置
     time_description = [generate_time_description(i) for i in range(0, 6)]
     table_head: Dict[str, str] = {
@@ -84,5 +92,5 @@ async def get_table4(path: PathModel) -> str:
         "H3": time_description[4],
         "I3": time_description[5],
     }
-    data_locs: List[str] = ["D5:D14", "E5:E14","F5:F14","G5:G14","H5:H14","I5:I14"]
+    data_locs: List[str] = ["D5:D14", "E5:E14", "F5:F14", "G5:G14", "H5:H14", "I5:I14"]
     return await fetch_table_data(path, table_head, data_locs, table4_data)

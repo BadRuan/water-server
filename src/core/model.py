@@ -11,12 +11,6 @@ class Database(BaseModel):
     database: str
 
 
-# 路径
-class PathModel(BaseModel):
-    source: str
-    dist: str
-
-
 class WaterLevel(BaseModel):
     tm: str
     current: float

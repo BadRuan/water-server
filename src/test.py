@@ -1,12 +1,10 @@
 from asyncio import run
-from util.pathtool import filePath
-from core.service import get_table4
+from core.service import get_table2
 
 
 
 async def test_table():
-    f = filePath('table3', 'dist4')
-    s = await get_table4(f)
+    s = await get_table2()
     print(s)
 
 
