@@ -66,11 +66,12 @@ async def table2_data() -> List[Station]:
         datetime.now(),  # 当前时刻
         datetime.now() - timedelta(hours=2),  # 两小时前
     ]
-    if today_or_yesterday:
-        target.append(datetime.now().replace(hour=8))
-    else:
-        target.append(datetime.now().replace(hour=8) - timedelta(days=1))  # 昨天8点整
-
+    target.append(
+        today_or_yesterday(
+            datetime.now().replace(hour=8),
+            datetime.now().replace(hour=8) - timedelta(days=1),
+        )
+    )
     return await fetch_station_data(target)
 
 

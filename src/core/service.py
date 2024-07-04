@@ -54,10 +54,7 @@ async def get_table2() -> str:
         "E3": generate_time_description(2),
         "F3": "",
     }
-    if today_or_yesterday:
-        table_head["F3"] = "今日8时"
-    else:
-        table_head["F3"] = "昨日8时"
+    table_head["F3"] = today_or_yesterday("今日8时", "昨日8时")
     data_locs: List[str] = ["D5:D14", "E5:E14", "F5:F14"]
     return await fetch_table_data(path, table_head, data_locs, table2_data)
 
