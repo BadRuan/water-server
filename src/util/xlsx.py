@@ -49,6 +49,7 @@ async def write_to_xlsx(
     table_head: Dict[str, str],
     data_locs: List[str],
     stations: List[Station],
+    hidden_column: List[str],
 ):
     wb = load_workbook(path.source)  # 加载源文件
     sheet = wb.active  # 获取活动工作表
@@ -60,5 +61,9 @@ async def write_to_xlsx(
     sheet = write_columns_head(sheet, table_head)
     # 填写对应水位数据
     sheet = write_cow_data(sheet, data_locs, stations)
+
+    # 隐藏某列
+    for column in hidden_column:
+        sheet.column_dimensions[column].hidden = True
 
     wb.save(path.dist)  # 保存到目标路径

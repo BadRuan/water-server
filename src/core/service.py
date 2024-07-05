@@ -23,10 +23,14 @@ def generate_time_description(hour_diff: int) -> str:
 
 # 定义一个获取表格数据的通用函数
 async def fetch_table_data(
-    pathModel: PathModel, table_head: Dict[str, str], data_locs: List[str], data_func
+    pathModel: PathModel,
+    table_head: Dict[str, str],
+    data_locs: List[str],
+    data_func,
+    hidden_column: List[str],
 ) -> str:
     stations: List[Station] = await data_func()
-    await write_to_xlsx(pathModel, table_head, data_locs, stations)
+    await write_to_xlsx(pathModel, table_head, data_locs, stations, hidden_column)
     return pathModel.dist
 
 
@@ -42,7 +46,7 @@ async def get_table1() -> str:
     }
     # 数据列位置
     data_locs: List[str] = ["D5:D14", "E5:E14", "F5:F14", "G5:G14", "H5:H14", "I5:I14"]
-    return await fetch_table_data(path, table_head, data_locs, table1_data)
+    return await fetch_table_data(path, table_head, data_locs, table1_data, [])
 
 
 # 获取表2数据的异步函数
@@ -56,7 +60,7 @@ async def get_table2() -> str:
     }
     table_head["F3"] = today_or_yesterday("今日8时", "昨日8时")
     data_locs: List[str] = ["D5:D14", "E5:E14", "F5:F14"]
-    return await fetch_table_data(path, table_head, data_locs, table2_data)
+    return await fetch_table_data(path, table_head, data_locs, table2_data, ['E'])
 
 
 # 获取表3数据的异步函数
@@ -73,7 +77,7 @@ async def get_table3() -> str:
         "I3": time_description[5],
     }
     data_locs: List[str] = ["D5:D14", "E5:E14", "F5:F14", "G5:G14", "H5:H14", "I5:I14"]
-    return await fetch_table_data(path, table_head, data_locs, table3_data)
+    return await fetch_table_data(path, table_head, data_locs, table3_data, [])
 
 
 # 获取表4数据的异步函数
@@ -90,4 +94,4 @@ async def get_table4() -> str:
         "I3": time_description[5],
     }
     data_locs: List[str] = ["D5:D14", "E5:E14", "F5:F14", "G5:G14", "H5:H14", "I5:I14"]
-    return await fetch_table_data(path, table_head, data_locs, table4_data)
+    return await fetch_table_data(path, table_head, data_locs, table4_data, [])
