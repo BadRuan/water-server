@@ -17,7 +17,7 @@ def filePath(source: str, dist: str) -> PathModel:
 
 
 def today_or_yesterday(today, yesterday):
-    current_hour = datetime.now().hour
+    current_hour: int = datetime.now().hour
     if current_hour > 10:
         return today
     else:
