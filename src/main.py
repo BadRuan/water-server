@@ -3,16 +3,17 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from datetime import datetime
-from core.service import get_table1, get_table2, get_table3, get_table4
+from core.service import TableService,Table1_Service, Table2_Service,Table3_Service,Table4_Service
 
 
 app = FastAPI()
 download_name: str = "%Y年%m月%d日_鸠江区三线水位测站记录表"
 
 
-@app.get("/api/table1")
+@app.get("/source/table1")
 async def table1():
-    file_path = await get_table1()
+    service: TableService = Table1_Service()
+    file_path = await service.get_table()
     return FileResponse(
         file_path,
         media_type="application/octet-stream",
@@ -20,9 +21,10 @@ async def table1():
     )
 
 
-@app.get("/api/table2")
+@app.get("/source/table2")
 async def table1():
-    file_path = await get_table2()
+    service: TableService = Table2_Service()
+    file_path = await service.get_table()
     return FileResponse(
         file_path,
         media_type="application/octet-stream",
@@ -30,9 +32,10 @@ async def table1():
     )
 
 
-@app.get("/api/table3")
+@app.get("/source/table3")
 async def table3():
-    file_path = await get_table3()
+    service: TableService = Table3_Service()
+    file_path = await service.get_table()
     return FileResponse(
         file_path,
         media_type="application/octet-stream",
@@ -40,9 +43,10 @@ async def table3():
     )
 
 
-@app.get("/api/table4")
+@app.get("/source/table4")
 async def table4():
-    file_path = await get_table4()
+    service: TableService = Table4_Service()
+    file_path = await service.get_table()
     return FileResponse(
         file_path,
         media_type="application/octet-stream",

@@ -1,97 +1,192 @@
 from typing import List, Dict
+from abc import abstractmethod
 from datetime import datetime, timedelta
 from core.model import Station
-from core.dao import table1_data, table2_data, table3_data, table4_data
-from util.xlsx import write_to_xlsx
+from core.dao import TableDao, Table1_Dao, Table2_Dao, Table3_Dao, Table4_Dao
+from util.xlsx import DataToXlsx
 from util.othertool import PathModel, filePath, today_or_yesterday
 
 
-# 定义一个生成时间描述的函数
-def generate_time_description(hour_diff: int) -> str:
-    now = datetime.now()
-    target_time = now - timedelta(hours=hour_diff)
-    target_date = target_time.date()
-    today = now.date()
-    yesterday = today - timedelta(days=1)
-    if target_date == today:
-        return "今日" + target_time.strftime("%H时")
-    elif target_date == yesterday:
-        return "昨日" + (target_time + timedelta(hours=24)).strftime("%H时")
-    else:
-        return target_time.strftime("%Y-%m-%d %H时")
+class TableService:
+
+    def __init__(self, dao: TableDao, xlsx: DataToXlsx) -> None:
+        self.dao: TableDao = dao
+        self.xlsx: DataToXlsx = xlsx
+
+    # 定义一个生成时间描述的函数
+    def generate_time_description(self, hour_diff: int) -> str:
+        now = datetime.now()
+        target_time = now - timedelta(hours=hour_diff)
+        target_date = target_time.date()
+        today = now.date()
+        yesterday = today - timedelta(days=1)
+        if target_date == today:
+            return "今日" + target_time.strftime("%H时")
+        elif target_date == yesterday:
+            return "昨日" + (target_time + timedelta(hours=24)).strftime("%H时")
+        else:
+            return target_time.strftime("%Y-%m-%d %H时")
+
+    @abstractmethod
+    def write_table_head(self):
+        pass
+
+    @abstractmethod
+    async def write_table_data(self):
+        pass
+
+    @abstractmethod
+    async def get_table(self) -> str:
+        pass
 
 
-# 定义一个获取表格数据的通用函数
-async def fetch_table_data(
-    pathModel: PathModel,
-    table_head: Dict[str, str],
-    data_locs: List[str],
-    data_func,
-    hidden_column: List[str],
-) -> str:
-    stations: List[Station] = await data_func()
-    await write_to_xlsx(pathModel, table_head, data_locs, stations, hidden_column)
-    return pathModel.dist
+class Table1_Service(TableService):
+
+    def __init__(self) -> None:
+        dao: TableDao = Table1_Dao()
+        xlsx: DataToXlsx = DataToXlsx(source="table1", dist="dist1")
+        super().__init__(dao, xlsx)
+
+    def write_table_head(self):
+        # 表头信息和位置
+        table_head: Dict[str, str] = {
+            "D3": "今日8时",
+            "E3": "昨日8时",
+            "F3": "上周8时",
+            "G3": "去年同期8时",
+        }
+        self.xlsx.write_columns_head(table_head)
+
+    async def write_table_data(self):
+        # 数据列位置
+        data_locs: List[str] = [
+            "D5:D14",
+            "E5:E14",
+            "F5:F14",
+            "G5:G14",
+            "H5:H14",
+            "I5:I14",
+        ]
+        datas: List[Station] = await self.dao.get_table_data()
+        self.xlsx.write_cow_data(data_locs, datas)
+
+    async def get_table(self) -> str:
+        self.xlsx.write_date()  # 更新表格日期
+        self.write_table_head()  # 按表头位置写入信息
+        await self.write_table_data()  # 填写表格数据
+        self.xlsx.save()
+        return self.xlsx.path.dist
 
 
-# 获取表1数据的异步函数
-async def get_table1() -> str:
-    path: PathModel = filePath(source="table1", dist="dist1")
-    # 表头信息和位置
-    table_head: Dict[str, str] = {
-        "D3": "今日8时",
-        "E3": "昨日8时",
-        "F3": "上周8时",
-        "G3": "去年同期8时",
-    }
-    # 数据列位置
-    data_locs: List[str] = ["D5:D14", "E5:E14", "F5:F14", "G5:G14", "H5:H14", "I5:I14"]
-    return await fetch_table_data(path, table_head, data_locs, table1_data, [])
+class Table2_Service(TableService):
+
+    def __init__(self) -> None:
+        dao: TableDao = Table2_Dao()
+        xlsx: DataToXlsx = DataToXlsx(source="table2", dist="dist2")
+        super().__init__(dao, xlsx)
+
+    def write_table_head(self):
+        # 表头信息和位置
+        table_head: Dict[str, str] = {
+            "D3": self.generate_time_description(0),
+            "E3": self.generate_time_description(2),
+            "F3": "",
+        }
+        table_head["F3"] = today_or_yesterday("今日8时", "昨日8时")
+        self.xlsx.write_columns_head(table_head)
+
+    async def write_table_data(self):
+        # 数据列位置
+        data_locs: List[str] = ["D5:D14", "E5:E14", "F5:F14"]
+        datas: List[Station] = await self.dao.get_table_data()
+        self.xlsx.write_cow_data(data_locs, datas)
+
+    async def get_table(self) -> str:
+        self.xlsx.write_date()  # 更新表格日期
+        self.write_table_head()  # 按表头位置写入信息
+        await self.write_table_data()  # 填写表格数据
+        self.xlsx.hidden_column(["E"])  # 隐藏E列
+        self.xlsx.save()
+        return self.xlsx.path.dist
 
 
-# 获取表2数据的异步函数
-async def get_table2() -> str:
-    path: PathModel = filePath(source="table2", dist="dist2")
-    # 表头信息和位置
-    table_head: Dict[str, str] = {
-        "D3": generate_time_description(0),
-        "E3": generate_time_description(2),
-        "F3": "",
-    }
-    table_head["F3"] = today_or_yesterday("今日8时", "昨日8时")
-    data_locs: List[str] = ["D5:D14", "E5:E14", "F5:F14"]
-    return await fetch_table_data(path, table_head, data_locs, table2_data, ['E'])
+class Table3_Service(TableService):
+
+    def __init__(self) -> None:
+        dao: TableDao = Table3_Dao()
+        xlsx: DataToXlsx = DataToXlsx(source="table3", dist="dist3")
+        super().__init__(dao, xlsx)
+
+    def write_table_head(self):
+        # 表头信息和位置
+        time_description = [self.generate_time_description(i) for i in range(0, 12, 2)]
+        table_head: Dict[str, str] = {
+            "D3": time_description[0],
+            "E3": time_description[1],
+            "F3": time_description[2],
+            "G3": time_description[3],
+            "H3": time_description[4],
+            "I3": time_description[5],
+        }
+        self.xlsx.write_columns_head(table_head)
+
+    async def write_table_data(self):
+        # 数据列位置
+        data_locs: List[str] = [
+            "D5:D14",
+            "E5:E14",
+            "F5:F14",
+            "G5:G14",
+            "H5:H14",
+            "I5:I14",
+        ]
+        datas: List[Station] = await self.dao.get_table_data()
+        self.xlsx.write_cow_data(data_locs, datas)
+
+    async def get_table(self) -> str:
+        self.xlsx.write_date()  # 更新表格日期
+        self.write_table_head()  # 按表头位置写入信息
+        await self.write_table_data()  # 填写表格数据
+        self.xlsx.save()
+        return self.xlsx.path.dist
 
 
-# 获取表3数据的异步函数
-async def get_table3() -> str:
-    path: PathModel = filePath(source="table3", dist="dist3")
-    # 表头信息和位置
-    time_description = [generate_time_description(i) for i in range(0, 12, 2)]
-    table_head: Dict[str, str] = {
-        "D3": time_description[0],
-        "E3": time_description[1],
-        "F3": time_description[2],
-        "G3": time_description[3],
-        "H3": time_description[4],
-        "I3": time_description[5],
-    }
-    data_locs: List[str] = ["D5:D14", "E5:E14", "F5:F14", "G5:G14", "H5:H14", "I5:I14"]
-    return await fetch_table_data(path, table_head, data_locs, table3_data, [])
+class Table4_Service(TableService):
 
+    def __init__(self) -> None:
+        dao: TableDao = Table4_Dao()
+        xlsx: DataToXlsx = DataToXlsx(source="table3", dist="dist4")
+        super().__init__(dao, xlsx)
 
-# 获取表4数据的异步函数
-async def get_table4() -> str:
-    path: PathModel = filePath(source="table3", dist="dist4")
-    # 表头信息和位置
-    time_description = [generate_time_description(i) for i in range(0, 6)]
-    table_head: Dict[str, str] = {
-        "D3": time_description[0],
-        "E3": time_description[1],
-        "F3": time_description[2],
-        "G3": time_description[3],
-        "H3": time_description[4],
-        "I3": time_description[5],
-    }
-    data_locs: List[str] = ["D5:D14", "E5:E14", "F5:F14", "G5:G14", "H5:H14", "I5:I14"]
-    return await fetch_table_data(path, table_head, data_locs, table4_data, [])
+    def write_table_head(self):
+        # 表头信息和位置
+        time_description = [self.generate_time_description(i) for i in range(0, 6)]
+        table_head: Dict[str, str] = {
+            "D3": time_description[0],
+            "E3": time_description[1],
+            "F3": time_description[2],
+            "G3": time_description[3],
+            "H3": time_description[4],
+            "I3": time_description[5],
+        }
+        self.xlsx.write_columns_head(table_head)
+
+    async def write_table_data(self):
+        # 数据列位置
+        data_locs: List[str] = [
+            "D5:D14",
+            "E5:E14",
+            "F5:F14",
+            "G5:G14",
+            "H5:H14",
+            "I5:I14",
+        ]
+        datas: List[Station] = await self.dao.get_table_data()
+        self.xlsx.write_cow_data(data_locs, datas)
+
+    async def get_table(self) -> str:
+        self.xlsx.write_date()  # 更新表格日期
+        self.write_table_head()  # 按表头位置写入信息
+        await self.write_table_data()  # 填写表格数据
+        self.xlsx.save()
+        return self.xlsx.path.dist
