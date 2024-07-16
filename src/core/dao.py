@@ -101,43 +101,15 @@ class Table3_Dao(TableDao):
         super().__init__()
 
     async def get_table_data(self) -> List[Station]:
-        return await self.fetch_station_data(
-            [
-                datetime.now(),  # 当前时刻
-                datetime.now() - timedelta(hours=2),  # 两小时前
-                datetime.now() - timedelta(hours=4),  # 四小时前
-                datetime.now() - timedelta(hours=6),  # 六小时前
-                datetime.now() - timedelta(hours=8),  # 八小时前
-                datetime.now() - timedelta(hours=10),  # 十小时前
-            ]
+        target = [
+            datetime.now(),  # 当前时刻
+            datetime.now() - timedelta(hours=4),  # 四小时前
+        ]
+        target.append(
+            today_or_yesterday(
+                datetime.now().replace(hour=8),
+                datetime.now().replace(hour=8) - timedelta(days=1),
+            )
         )
+        return await self.fetch_station_data(target)
 
-
-# 获取表4数据
-class Table4_Dao(TableDao):
-
-    def __init__(self) -> None:
-        super().__init__()
-
-    async def get_table_data(self) -> List[Station]:
-        return await self.fetch_station_data(
-            [
-                datetime.now(),  # 当前时刻
-                datetime.now() - timedelta(hours=1),  # 一小时前
-                datetime.now() - timedelta(hours=2),  # 两小时前
-                datetime.now() - timedelta(hours=3),  # 三小时前
-                datetime.now() - timedelta(hours=4),  # 四小时前
-                datetime.now() - timedelta(hours=5),  # 五小时前
-            ]
-        )
-
-
-# 水位数据总览
-class StableCount:
-
-    # 得到每个水文站点水位数据
-    def all_station_count(self) -> List[tuple]:
-        SQL = "SELECT name,COUNT(current) FROM waterlevel GROUP BY name"
-        with TDengineTool() as td:
-            result = td.query(SQL)
-            return [(row[0], row[1]) for row in result]

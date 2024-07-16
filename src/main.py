@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from datetime import datetime
-from core.service import TableService,Table1_Service, Table2_Service,Table3_Service,Table4_Service
+from core.service import TableService, Table1_Service, Table2_Service, Table3_Service
 
 
 app = FastAPI()
@@ -42,16 +42,6 @@ async def table3():
         filename=f"""{datetime.now().strftime(download_name)}.xlsx""",
     )
 
-
-@app.get("/source/table4")
-async def table4():
-    service: TableService = Table4_Service()
-    file_path = await service.get_table()
-    return FileResponse(
-        file_path,
-        media_type="application/octet-stream",
-        filename=f"""{datetime.now().strftime(download_name)}.xlsx""",
-    )
 
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
 
