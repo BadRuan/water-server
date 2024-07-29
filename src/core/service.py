@@ -115,23 +115,20 @@ class Table3_Service(TableService):
 
     def __init__(self) -> None:
         dao: TableDao = Table3_Dao()
-        xlsx: DataToXlsx = DataToXlsx(source="table2", dist="dist3")
+        xlsx: DataToXlsx = DataToXlsx(source="table3", dist="dist3")
         super().__init__(dao, xlsx)
 
     def write_table_head(self):
         # 表头信息和位置
         table_head: Dict[str, str] = {
             "D3": self.generate_time_description(0),
-            "E3": self.generate_time_description(4),
-            "F3": "",
-            "H3": "四小时内",
         }
-        table_head["F3"] = today_or_yesterday("今日8时", "昨日8时")
+        table_head["E3"] = today_or_yesterday("今日8时", "昨日8时")
         self.xlsx.write_columns_head(table_head)
 
     async def write_table_data(self):
         # 数据列位置
-        data_locs: List[str] = ["D5:D14", "E5:E14", "F5:F14"]
+        data_locs: List[str] = ["D5:D14", "E5:E14"]
         datas: List[Station] = await self.dao.get_table_data()
         self.xlsx.write_cow_data(data_locs, datas)
 
@@ -139,6 +136,5 @@ class Table3_Service(TableService):
         self.xlsx.write_date()  # 更新表格日期
         self.write_table_head()  # 按表头位置写入信息
         await self.write_table_data()  # 填写表格数据
-        self.xlsx.hidden_column(["E"])  # 隐藏E列
         self.xlsx.save()
         return self.xlsx.path.dist

@@ -103,7 +103,6 @@ class Table3_Dao(TableDao):
     async def get_table_data(self) -> List[Station]:
         target = [
             datetime.now(),  # 当前时刻
-            datetime.now() - timedelta(hours=4),  # 四小时前
         ]
         target.append(
             today_or_yesterday(
