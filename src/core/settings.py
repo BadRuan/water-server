@@ -3,7 +3,7 @@ from core.model import Database, Station
 
 
 # 定义三线颜色
-SF_COLOR, JJ_COLOR, BZ_COLOR = "189FA7", "0070C0", "FF0000"
+DEFAULT_COLOR, SF_COLOR, JJ_COLOR, BZ_COLOR = "000000", "189FA7", "0070C0", "FF0000"
 
 # 数据库参数
 DATABASE_DEV = Database(

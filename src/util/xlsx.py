@@ -2,7 +2,7 @@ from typing import List, Dict
 from datetime import datetime
 from openpyxl import load_workbook
 from openpyxl.styles import Font
-from core.settings import SF_COLOR, JJ_COLOR, BZ_COLOR
+from core.settings import DEFAULT_COLOR, SF_COLOR, JJ_COLOR, BZ_COLOR
 from core.model import Station
 from util.othertool import PathModel, filePath
 
@@ -31,6 +31,8 @@ class DataToXlsx:
             cell.font = Font(color=JJ_COLOR, bold=True)
         elif value >= bzsw:
             cell.font = Font(color=BZ_COLOR, bold=True)
+        else:
+            cell.font = Font(color=DEFAULT_COLOR)
 
     # 隐藏某列
     def hidden_column(self, hidden_column: List[str]):
