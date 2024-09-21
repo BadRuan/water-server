@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 from core.model import WaterLevel, Station
 from core.settings import STATIONS
 from util.tdenginetool import TDengineTool
-from util.othertool import today_or_yesterday
 
 
 class TableDao:
@@ -55,45 +54,6 @@ class TableDao:
         pass
 
 
-# 获取表1数据
-class Table1_Dao(TableDao):
-
-    def __init__(self) -> None:
-        super().__init__()
-
-    async def get_table_data(self) -> List[Station]:
-        return await self.fetch_station_data(
-            [
-                datetime.now().replace(hour=8),  # 当前日期8点整
-                datetime.now().replace(hour=8) - timedelta(days=1),  # 昨天8点整
-                datetime.now().replace(hour=8) - timedelta(weeks=1),  # 一周前8点整
-                datetime.now()
-                .replace(hour=8)
-                .replace(year=datetime.now().year - 1),  # 去年同期8点整
-            ]
-        )
-
-
-# 获取表2数据
-class Table2_Dao(TableDao):
-
-    def __init__(self) -> None:
-        super().__init__()
-
-    async def get_table_data(self) -> List[Station]:
-        target = [
-            datetime.now(),  # 当前时刻
-            datetime.now() - timedelta(hours=2),  # 两小时前
-        ]
-        target.append(
-            today_or_yesterday(
-                datetime.now().replace(hour=8),
-                datetime.now().replace(hour=8) - timedelta(days=1),
-            )
-        )
-        return await self.fetch_station_data(target)
-
-
 # 获取表3数据
 class Table3_Dao(TableDao):
 
@@ -102,13 +62,8 @@ class Table3_Dao(TableDao):
 
     async def get_table_data(self) -> List[Station]:
         target = [
-            datetime.now(),  # 当前时刻
+            datetime.now().replace(hour=8),
+            datetime.now().replace(hour=8) - timedelta(days=1),
         ]
-        target.append(
-            today_or_yesterday(
-                datetime.now().replace(hour=8),
-                datetime.now().replace(hour=8) - timedelta(days=1),
-            )
-        )
-        return await self.fetch_station_data(target)
 
+        return await self.fetch_station_data(target)
