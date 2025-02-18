@@ -2,9 +2,9 @@ from typing import List, Dict
 from datetime import datetime
 from openpyxl import load_workbook
 from openpyxl.styles import Font
-from core.settings import DEFAULT_COLOR, SF_COLOR, JJ_COLOR, BZ_COLOR
-from core.model import Station
-from util.othertool import PathModel, filePath
+from config.settings import DEFAULT_COLOR, SF_COLOR, JJ_COLOR, BZ_COLOR
+from model import Station
+from utils.othertool import PathModel, filePath
 
 
 class DataToXlsx:
@@ -60,4 +60,4 @@ class DataToXlsx:
 
     # 保存到目标路径
     def save(self):
-        self.wb.save(self.path.dist)  
+        self.wb.save(self.path.dist)

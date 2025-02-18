@@ -1,13 +1,13 @@
 from typing import List
-from core.model import Database, Station
+from model import DatabaseConfig, Station
 
 
 # 定义三线颜色
 DEFAULT_COLOR, SF_COLOR, JJ_COLOR, BZ_COLOR = "000000", "189FA7", "0070C0", "FF0000"
 
 # 数据库参数
-DATABASE_DEV = Database(
-    url="tdengine", port=6041, user="root", password="tdengine", database="water"
+DATABASE_DEV = DatabaseConfig(
+    url="192.168.3.2", port=6041, user="root", password="Deepseek666", database="water"
 )
 
 STATIONS: List[Station] = [

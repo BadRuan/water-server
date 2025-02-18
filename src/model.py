@@ -2,8 +2,7 @@ from pydantic import BaseModel
 from typing import List
 
 
-# 数据库参数格式
-class Database(BaseModel):
+class DatabaseConfig(BaseModel):
     url: str
     port: int
     user: str
@@ -13,12 +12,11 @@ class Database(BaseModel):
 
 class WaterLevel(BaseModel):
     tm: str
-    current: float
+    z: float
     stcd: int
     name: str
 
 
-# 水位测站基础参数
 class Station(BaseModel):
     stcd: int
     name: str
