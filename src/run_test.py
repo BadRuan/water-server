@@ -20,7 +20,8 @@ if __name__ == "__main__":
         TestTable2Service("test_dist_table"),
         TestApiDao("test_select_all_count"),
         TestApiDao("test_select_year_count"),
-        TestApiDao("test_select_every_stcd_count")
+        TestApiDao("test_select_every_stcd_count"),
+        TestApiDao("test_select_year_every_stcd_count")
     ]
 
     suite.addTests(case_list)

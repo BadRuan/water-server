@@ -5,6 +5,7 @@ from fastapi.responses import FileResponse
 from datetime import datetime
 from service.base_service import TableService
 from service.table_service import Table1_Service, Table2_Service
+from service.api_service import ApiService
 
 
 app = FastAPI()
@@ -31,6 +32,11 @@ async def table3():
         media_type="application/octet-stream",
         filename=f"""{datetime.now().strftime(download_name)}.xlsx""",
     )
+
+@app.get('/api')
+async def api():
+    service = ApiService()
+    return service.getCountInfo()
 
 
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
