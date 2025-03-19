@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from datetime import datetime, timedelta
 from utils.xlsx import DataToXlsx
-from dao.base_dao import TableDao
+from dao.table_dao import TableDao
 
 
 class TableService:

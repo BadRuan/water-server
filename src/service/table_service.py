@@ -2,8 +2,7 @@ from typing import List, Dict
 from model import Station
 from utils.xlsx import DataToXlsx
 from utils.othertool import today_or_yesterday
-from dao.base_dao import TableDao
-from dao.table_dao import Table1_Dao
+from dao.table_dao import TableDao,Table1_Dao
 from service.base_service import TableService
 
 

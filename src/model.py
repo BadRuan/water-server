@@ -24,3 +24,8 @@ class Station(BaseModel):
     jjsw: float
     bzsw: float
     waterline: List[float] = []
+
+
+class ApiStation(BaseModel):
+    name: str
+    count: int
