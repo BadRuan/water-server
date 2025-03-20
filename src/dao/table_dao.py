@@ -2,7 +2,7 @@ from typing import List
 from datetime import datetime, timedelta
 from abc import abstractmethod
 from copy import deepcopy
-from model import WaterLevel, Station
+from models.table import WaterLevel, Station
 from config.settings import STATIONS
 from utils.logger import Logger
 from utils.database_storage import DatabaseStorage

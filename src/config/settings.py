@@ -1,5 +1,6 @@
 from typing import List
-from model import DatabaseConfig, Station
+from models.database import DatabaseConfig
+from models.table import Station
 
 
 # 定义三线颜色

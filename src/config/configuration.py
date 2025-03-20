@@ -1,4 +1,4 @@
-from model import DatabaseConfig
+from models.database import DatabaseConfig
 from config.settings import DATABASE_DEV
 
 

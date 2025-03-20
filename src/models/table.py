@@ -2,14 +2,6 @@ from pydantic import BaseModel
 from typing import List
 
 
-class DatabaseConfig(BaseModel):
-    url: str
-    port: int
-    user: str
-    password: str
-    database: str
-
-
 class WaterLevel(BaseModel):
     tm: str
     z: float
@@ -24,8 +16,3 @@ class Station(BaseModel):
     jjsw: float
     bzsw: float
     waterline: List[float] = []
-
-
-class ApiStation(BaseModel):
-    name: str
-    count: int

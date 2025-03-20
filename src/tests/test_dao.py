@@ -1,6 +1,6 @@
 from unittest import TestCase
 from typing import List
-from model import Station
+from models.table import Station
 from dao.table_dao import Table1_Dao, Table2_Dao
 
 

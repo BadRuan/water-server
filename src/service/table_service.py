@@ -1,9 +1,42 @@
 from typing import List, Dict
-from model import Station
+from abc import abstractmethod
+from datetime import datetime, timedelta
+from models.table import Station
 from utils.xlsx import DataToXlsx
-from utils.othertool import today_or_yesterday
-from dao.table_dao import TableDao,Table1_Dao
-from service.base_service import TableService
+from dao.table_dao import TableDao, Table1_Dao
+
+
+class TableService:
+
+    def __init__(self, dao: TableDao, xlsx: DataToXlsx) -> None:
+        self.dao: TableDao = dao
+        self.xlsx: DataToXlsx = xlsx
+
+    # 定义一个生成时间描述的函数
+    def generate_time_description(self, hour_diff: int) -> str:
+        now = datetime.now()
+        target_time = now - timedelta(hours=hour_diff)
+        target_date = target_time.date()
+        today = now.date()
+        yesterday = today - timedelta(days=1)
+        if target_date == today:
+            return "今日" + target_time.strftime("%H时")
+        elif target_date == yesterday:
+            return "昨日" + (target_time + timedelta(hours=24)).strftime("%H时")
+        else:
+            return target_time.strftime("%Y-%m-%d %H时")
+
+    @abstractmethod
+    def write_table_head(self):
+        pass
+
+    @abstractmethod
+    async def write_data_to_table(self):
+        pass
+
+    @abstractmethod
+    async def dist_table(self) -> str:
+        pass
 
 
 class Table1_Service(TableService):
@@ -35,6 +68,7 @@ class Table1_Service(TableService):
         self.write_data_to_table()  # 填写表格数据
         self.xlsx.save()
         return self.xlsx.path.dist
+
 
 class Table2_Service(TableService):
 

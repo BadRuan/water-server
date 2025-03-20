@@ -3,7 +3,7 @@ from datetime import datetime
 from openpyxl import load_workbook
 from openpyxl.styles import Font
 from config.settings import DEFAULT_COLOR, SF_COLOR, JJ_COLOR, BZ_COLOR
-from model import Station
+from models.table import Station
 from utils.othertool import PathModel, filePath
 
 

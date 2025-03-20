@@ -1,5 +1,5 @@
 from typing import List
-from model import ApiStation
+from models.api import ApiStation
 from datetime import datetime
 from utils.database_storage import DatabaseStorage
 from datetime import datetime
@@ -31,7 +31,7 @@ class ApiDao:
             return [ApiStation(name=row[0], count=row[1]) for row in results]
         return []
 
-    def select_year_every_stcd_count(self) -> List:
+    def select_year_every_stcd_count(self) -> List[ApiStation]:
         current_year: int = datetime.now().year
         SQL = f"SELECT `NAME`, count(*) FROM waterlevel WHERE ts >= '{current_year}-01-01 00:00:00' AND ts < NOW() GROUP BY `NAME`"
         with DatabaseStorage() as td:
