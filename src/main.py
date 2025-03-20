@@ -45,7 +45,7 @@ async def table2():
     )
 
 
-@app.get("/water", response_model=SuccessResponse, status_code=200)
+@app.get("/count", response_model=SuccessResponse, status_code=200)
 async def get_water_count():
     try:
         service = ApiService()
