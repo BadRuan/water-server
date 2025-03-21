@@ -1,7 +1,8 @@
-FROM python:latest
+FROM python:3.11
 ENV TZ Asia/Shanghai
 WORKDIR /app
 COPY src .
-RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+VOLUME ["/app/static"]
+RUN pip install --trusted-host mirrors.huaweicloud.com -i https://mirrors.huaweicloud.com/repository/pypi/simple   -r requirements.txt
 CMD ["python", "main.py"]
 EXPOSE 8080
