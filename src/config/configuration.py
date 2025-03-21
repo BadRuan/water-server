@@ -1,6 +1,6 @@
 from models.database import DatabaseConfig
-from config.settings import DATABASE_DEV
+from config.settings import DATABASE_TEST
 
 
 def getDatabase() -> DatabaseConfig:
-    return DATABASE_DEV
+    return DATABASE_TEST

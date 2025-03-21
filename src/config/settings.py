@@ -11,6 +11,10 @@ DATABASE_DEV = DatabaseConfig(
     url="192.168.3.2", port=6041, user="root", password="Deepseek666", database="water"
 )
 
+DATABASE_TEST = DatabaseConfig(
+    url="tdengine", port=6041, user="root", password="Deepseek666", database="water"
+)
+
 STATIONS: List[Station] = [
     Station(stcd=62904500, sfsw=11.5, jjsw=13.2, bzsw=15.84, name="无为大堤"),
     Station(stcd=60115400, sfsw=9.4, jjsw=11.2, bzsw=13.4, name="城北圩"),

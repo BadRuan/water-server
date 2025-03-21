@@ -1,17 +1,13 @@
 import uvicorn
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
-from datetime import datetime
-from schemas.response import SuccessResponse
-from exceptions.api_exception import NotFoundException
-from service.table_service import TableService, Table1_Service, Table2_Service
+from routes.table import table_router
+from routes.api import api_router
 from service.api_service import ApiService
 
-
 app = FastAPI()
-download_name: str = "%Y年%m月%d日_鸠江区三线水位测站记录表"
+
 
 # 跨域配置
 app.add_middleware(
@@ -23,38 +19,22 @@ app.add_middleware(
 )
 
 
-@app.get("/table/1")
-async def table1():
-    service: TableService = Table1_Service()
-    file_path = service.dist_table()
-    return FileResponse(
-        file_path,
-        media_type="application/octet-stream",
-        filename=f"""{datetime.now().strftime(download_name)}.xlsx""",
-    )
+@app.middleware("http")
+async def handle_static_files(request: Request, call_next):
+    api = ApiService()
+    ip_address: str = request.client.host
+    api.add_visit(ip_address)
+
+    response = await call_next(request)
+    return response
 
 
-@app.get("/table/2")
-async def table2():
-    service: TableService = Table2_Service()
-    file_path = service.dist_table()
-    return FileResponse(
-        file_path,
-        media_type="application/octet-stream",
-        filename=f"""{datetime.now().strftime(download_name)}.xlsx""",
-    )
-
-
-@app.get("/count", response_model=SuccessResponse, status_code=200)
-async def get_water_count():
-    try:
-        service = ApiService()
-        return SuccessResponse(data=service.getCountInfo())
-    except NotFoundException as e:
-        raise HTTPException(status_code=404, detail=e.json())
-
+# 挂载路由
+app.include_router(table_router, prefix="/table", tags=["tables"])
+app.include_router(api_router, prefix="/api", tags=["apis"])
 
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
+
 
 if __name__ == "__main__":
     uvicorn.run(app="main:app", host="0.0.0.0", port=8080)

@@ -1,5 +1,4 @@
-from typing import List
-from models.api import ApiStation
+from models.api_model import CountModel
 from datetime import datetime
 from utils.database_storage import DatabaseStorage
 from datetime import datetime
@@ -7,34 +6,49 @@ from datetime import datetime
 
 class ApiDao:
 
-    def select_all_count(self) -> int:
-        SQL = f"SELECT COUNT(*) FROM waterlevel"
-        with DatabaseStorage() as td:
-            results = td.query(SQL)
-            for r in results:
-                return r[0]
-            return 0
+    def getCountInfo(self) -> CountModel:
+        total_count: int = 0
+        this_year_count: int = 0
+        visit_count: int = 0
+        download_count: int = 0
 
-    def select_year_count(self) -> int:
+        total_count_SQL: str = f"SELECT COUNT(*) FROM waterlevel"
         current_year: int = datetime.now().year
-        SQL = f"SELECT COUNT(*) FROM `waterlevel` WHERE ts >= '{current_year}-01-01 00:00:00' AND ts < NOW()"
+        this_year_count_SQL: str = (
+            f"SELECT COUNT(*) FROM `waterlevel` WHERE ts >= '{current_year}-01-01 00:00:00' AND ts < NOW()"
+        )
+        visit_count_SQL: str = f"SELECT count(*) FROM website_access"
+        download_count_SQL: str = f"SELECT count(*) FROM table_downloads"
+
         with DatabaseStorage() as td:
-            results = td.query(SQL)
+
+            results = td.query(total_count_SQL)
             for r in results:
-                return r[0]
-            return 0
+                total_count = r[0]
+            results = td.query(this_year_count_SQL)
+            for r in results:
+                this_year_count = r[0]
+            results = td.query(visit_count_SQL)
+            for r in results:
+                visit_count = r[0]
+            results = td.query(download_count_SQL)
+            for r in results:
+                download_count = r[0]
 
-    def select_every_stcd_count(self) -> List[ApiStation]:
-        SQL = f"SELECT `NAME`, count(*) FROM waterlevel GROUP BY `NAME`"
-        with DatabaseStorage() as td:
-            results = td.query(SQL)
-            return [ApiStation(name=row[0], count=row[1]) for row in results]
-        return []
+        return CountModel(
+            total_count=total_count,
+            this_year_count=this_year_count,
+            visit_count=visit_count,
+            download_count=download_count,
+        )
 
-    def select_year_every_stcd_count(self) -> List[ApiStation]:
-        current_year: int = datetime.now().year
-        SQL = f"SELECT `NAME`, count(*) FROM waterlevel WHERE ts >= '{current_year}-01-01 00:00:00' AND ts < NOW() GROUP BY `NAME`"
+    def add_recoder(self, table_name: str, ip_address: str) -> bool:
+        now = datetime.now()
+        formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+        SQL: str = (
+            f"INSERT INTO {table_name}  VALUES ('{formatted_date}.000', '{ip_address}')"
+        )
         with DatabaseStorage() as td:
-            results = td.query(SQL)
-            return [ApiStation(name=row[0], count=row[1]) for row in results]
-        return []
+            td.query(SQL)
+            return True
+        return False
