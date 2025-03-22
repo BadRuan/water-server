@@ -1,5 +1,9 @@
 from models.api_model import CountModel
+from utils.logger import Logger
 from dao.api_dao import ApiDao
+
+
+logger = Logger(__name__)
 
 
 class ApiService:
@@ -10,7 +14,9 @@ class ApiService:
         return self.dao.getCountInfo()
 
     def add_visit(self, ip_address: str) -> bool:
+        logger.info(f"IP: {ip_address} 访问了本站")
         return self.dao.add_recoder("website_access", ip_address)
 
     def add_download(self, ip_address: str) -> bool:
+        logger.info(f"IP {ip_address} 下载了水位表")
         return self.dao.add_recoder("table_downloads", ip_address)

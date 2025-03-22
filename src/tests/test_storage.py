@@ -1,8 +1,5 @@
 from unittest import TestCase
-from utils.database_storage import DatabaseStorage
-from utils.logger import Logger
-
-logger = Logger(__name__)
+from utils.storage import DatabaseStorage
 
 
 class TestStorage(TestCase):
@@ -18,4 +15,4 @@ class TestStorage(TestCase):
             result = storage.query(SQL)
             self.assertIsNotNone(result)
             for r in result:
-                logger.debug(f"执行查询语句，数据库共{r[0]}条水位数据")
+                self.assertIsNotNone(r[0])

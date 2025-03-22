@@ -1,41 +1,34 @@
 from unittest import TestCase
 from service.table_service import Table1_Service, Table2_Service
 from service.api_service import ApiService
-from utils.logger import Logger
 
 
-logger = Logger(__name__)
-
-
-class TestTable1Service(TestCase):
+class TestTableService(TestCase):
 
     def test_dist_table(self):
-        service = Table1_Service()
-        service.dist_table()
-
-
-class TestTable2Service(TestCase):
-
-    def test_dist_table(self):
-        service = Table2_Service()
-        service.dist_table()
-        logger.debug("测试获取计数业务执行成功")
+        service1 = Table1_Service()
+        service2 = Table2_Service()
+        path1: str = service1.dist_table()
+        path2: str = service2.dist_table()
+        self.assertNotEqual(path1, "")
+        self.assertNotEqual(path2, "")
 
 
 class TestApiService(TestCase):
 
     def test_getCountInfo(self):
         service = ApiService()
-        service.getCountInfo()
+        total_count: int = service.getCountInfo().total_count
+        self.assertNotEqual(total_count, 0)
 
     def test_add_visit(self):
         service = ApiService()
         ip_address: str = "127.0.0.1"
-        service.add_visit(ip_address)
-        logger.debug("测试增加浏览记录业务执行成功")
+        result: bool = service.add_visit(ip_address)
+        self.assertEqual(result, True)
 
     def test_add_download(self):
         service = ApiService()
         ip_address: str = "127.0.0.1"
-        service.add_download(ip_address)
-        logger.debug("测试增加下载记录业务执行成功")
+        result: bool = service.add_download(ip_address)
+        self.assertEqual(result, True)

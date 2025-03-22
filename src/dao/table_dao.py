@@ -5,7 +5,7 @@ from copy import deepcopy
 from models.table import WaterLevel, Station
 from config.settings import STATIONS
 from utils.logger import Logger
-from utils.database_storage import DatabaseStorage
+from utils.storage import DatabaseStorage
 
 logger = Logger(__name__)
 

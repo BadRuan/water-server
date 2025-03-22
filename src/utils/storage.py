@@ -16,7 +16,6 @@ class DatabaseStorage:
             dsn = f"taosws://{_dbc.user}:{_dbc.password}@{_dbc.url}:{_dbc.port}"
             self.conn = taosws.connect(dsn)
             self.conn.execute(f"USE {_dbc.database}")
-            logger.info("数据库已连接")
             self.initialized = True
         except Exception:
             logger.error(f"数据库异常: {Exception}")
@@ -28,7 +27,6 @@ class DatabaseStorage:
     def __exit__(self, exc_type, exc_value, exc_tb):
         if self.conn is not None:
             self.conn.close()
-            logger.info("数据库已断开")
 
     def __enter__(self):
         self.ensure_initialized()

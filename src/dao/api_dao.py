@@ -1,7 +1,6 @@
 from models.api_model import CountModel
 from datetime import datetime
-from utils.database_storage import DatabaseStorage
-from datetime import datetime
+from utils.storage import DatabaseStorage
 
 
 class ApiDao:

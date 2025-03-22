@@ -10,10 +10,8 @@ table_router = APIRouter(tags=["tables"])
 download_name: str = f"%Y年%m月%d日_鸠江区三线水位测站记录表"
 
 
-@table_router.get("/1")
-async def table1(request: Request):
-    service: TableService = Table1_Service()
-    file_path = service.dist_table()
+def common(request: Request, service: TableService):
+    file_path: str = service().dist_table()
     api = ApiService()
     ip_address: str = request.client.host
     api.add_download(ip_address)
@@ -22,17 +20,13 @@ async def table1(request: Request):
         media_type="application/octet-stream",
         filename=f"""{datetime.now().strftime(download_name)}.xlsx""",
     )
+
+
+@table_router.get("/1")
+async def table1(request: Request):
+    return common(request, Table1_Service)
 
 
 @table_router.get("/2")
 async def table2(request: Request):
-    service: TableService = Table2_Service()
-    file_path = service.dist_table()
-    api = ApiService()
-    ip_address: str = request.client.host
-    api.add_download(ip_address)
-    return FileResponse(
-        file_path,
-        media_type="application/octet-stream",
-        filename=f"""{datetime.now().strftime(download_name)}.xlsx""",
-    )
+    return common(request, Table2_Service)
