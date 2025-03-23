@@ -73,7 +73,7 @@ class ApiDao:
         with DatabaseStorage() as td:
             for station in RAW_STATIONS:
                 query_sql: str = (
-                    f"select `current`, `ts` from `t{station.stcd}` ORDER BY `ts` DESC LIMIT 1"
+                    f"select TO_CHAR(ts, 'YYYY-mm-dd hh24:mi:ss'), `current` from `t{station.stcd}` ORDER BY `ts` DESC LIMIT 1"
                 )
                 r = td.query(query_sql)
                 for r in r:
@@ -81,8 +81,8 @@ class ApiDao:
                         RecentlyWaterModel(
                             name=station.name,
                             stcd=station.stcd,
-                            current=round(r[0], 2),
-                            tm=r[1][:-7],
+                            current=round(r[1], 2),
+                            tm=r[0],
                         )
                     )
         return data_list

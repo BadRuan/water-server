@@ -6,6 +6,7 @@ from routes.table import table_router
 from routes.api import api_router
 from service.api_service import ApiService
 
+
 app = FastAPI()
 
 
