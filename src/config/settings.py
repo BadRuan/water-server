@@ -1,6 +1,7 @@
 from typing import List
 from models.database import DatabaseConfig
 from models.table import Station
+from models.api_model import StationConfig
 
 
 # 定义三线颜色
@@ -11,7 +12,7 @@ DATABASE_DEV = DatabaseConfig(
     url="192.168.3.2", port=6041, user="root", password="Deepseek666", database="water"
 )
 
-DATABASE_TEST = DatabaseConfig(
+DATABASE_PRO = DatabaseConfig(
     url="tdengine", port=6041, user="root", password="Deepseek666", database="water"
 )
 
@@ -26,4 +27,13 @@ STATIONS: List[Station] = [
     Station(stcd=62904500, sfsw=11.5, jjsw=13.2, bzsw=14.5, name="惠生连圩堤"),
     Station(stcd=62904500, sfsw=11.5, jjsw=13.2, bzsw=14.5, name="永定大圩堤"),
     Station(stcd=62904500, sfsw=11.0, jjsw=13.0, bzsw=13.5, name="黑沙洲、天然洲圩"),
+]
+
+RAW_STATIONS: List[StationConfig] = [
+    StationConfig(stcd=60115400, name="芜湖"),
+    StationConfig(stcd=62904500, name="凤凰颈闸下"),
+    StationConfig(stcd=62900700, name="裕溪闸下"),
+    StationConfig(stcd=62900600, name="裕溪闸上"),
+    StationConfig(stcd=62906500, name="清水"),
+    StationConfig(stcd=62905100, name="新桥闸上"),
 ]

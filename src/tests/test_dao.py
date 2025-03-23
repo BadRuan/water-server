@@ -1,6 +1,7 @@
 from unittest import TestCase
 from typing import List
 from models.table import Station
+from models.api_model import StoryModel, RecentlyWaterModel
 from dao.table_dao import TableDao, Table1_Dao, Table2_Dao
 from dao.api_dao import ApiDao
 
@@ -22,3 +23,12 @@ class TestApiDao(TestCase):
         dao = ApiDao()
         total_count: int = dao.getCountInfo().total_count
         self.assertNotEqual(total_count, 0)
+
+    def test_query_story(self):
+        dao = ApiDao()
+        storys: List[StoryModel] = dao.query_story()
+        self.assertNotEqual(len(storys), 0)
+
+    def test_query_recently(self):
+        dao = ApiDao()
+        dao.query_recently()

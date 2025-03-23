@@ -15,6 +15,8 @@ if __name__ == "__main__":
         TestStorage("test_query"),
         TestTableDao("test_get_table_data"),
         TestApiDao("test_getCountInfo"),
+        TestApiDao("test_query_story"),
+        TestApiDao("test_query_recently"),
         TestTableService("test_dist_table"),
         TestApiService("test_getCountInfo"),
         TestApiService("test_add_visit"),

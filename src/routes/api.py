@@ -14,3 +14,21 @@ async def get_water_count():
         return SuccessResponse(data=service.getCountInfo())
     except NotFoundException as e:
         raise HTTPException(status_code=404, detail=e.json())
+
+
+@api_router.get("/story", response_model=SuccessResponse, status_code=200)
+async def get_story():
+    try:
+        service = ApiService()
+        return SuccessResponse(data=service.get_story())
+    except NotFoundException as e:
+        raise HTTPException(status_code=404, detail=e.json())
+
+
+@api_router.get("/recently", response_model=SuccessResponse, status_code=200)
+async def get_recently():
+    try:
+        service = ApiService()
+        return SuccessResponse(data=service.get_recently())
+    except NotFoundException as e:
+        raise HTTPException(status_code=404, detail=e.json())

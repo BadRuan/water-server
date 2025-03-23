@@ -1,6 +1,8 @@
-from models.api_model import CountModel
+from typing import List
+from models.api_model import CountModel, StoryModel, RecentlyWaterModel
 from datetime import datetime
 from utils.storage import DatabaseStorage
+from config.settings import RAW_STATIONS
 
 
 class ApiDao:
@@ -51,3 +53,36 @@ class ApiDao:
             td.query(SQL)
             return True
         return False
+
+    def query_story(self) -> List[StoryModel]:
+        event_time: str = ""
+        content: str = ""
+
+        query_sql: str = "SELECT `event_time`, `content`  FROM `story`"
+        with DatabaseStorage() as td:
+            results = td.query(query_sql)
+            storys: List[StoryModel] = []
+            for r in results:
+                event_time = r[0]
+                content = r[1]
+                storys.append(StoryModel(event_time=event_time[0:10], content=content))
+            return storys
+
+    def query_recently(self) -> List[RecentlyWaterModel]:
+        data_list: List[RecentlyWaterModel] = []
+        with DatabaseStorage() as td:
+            for station in RAW_STATIONS:
+                query_sql: str = (
+                    f"select `current`, `ts` from `t{station.stcd}` ORDER BY `ts` DESC LIMIT 1"
+                )
+                r = td.query(query_sql)
+                for r in r:
+                    data_list.append(
+                        RecentlyWaterModel(
+                            name=station.name,
+                            stcd=station.stcd,
+                            current=round(r[0], 2),
+                            tm=r[1][:-7],
+                        )
+                    )
+        return data_list
