@@ -9,11 +9,7 @@ DEFAULT_COLOR, SF_COLOR, JJ_COLOR, BZ_COLOR = "000000", "189FA7", "0070C0", "FF0
 
 # 数据库参数
 DATABASE_DEV = DatabaseConfig(
-    url="192.168.3.2", port=6041, user="root", password="Deepseek666", database="water"
-)
-
-DATABASE_PRO = DatabaseConfig(
-    url="tdengine", port=6041, user="root", password="Deepseek666", database="water"
+    url="*", port=6041, user="root", password="Deepseek666", database="water"
 )
 
 STATIONS: List[Station] = [
