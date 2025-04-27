@@ -1,7 +1,12 @@
 from datetime import datetime
 from fastapi import APIRouter, Request
 from fastapi.responses import FileResponse
-from service.table_service import TableService, Table1_Service, Table2_Service
+from service.table_service import (
+    TableService,
+    Table1_Service,
+    Table2_Service,
+    Table3_Service,
+)
 from service.api_service import ApiService
 
 
@@ -30,3 +35,8 @@ async def table1(request: Request):
 @table_router.get("/2")
 async def table2(request: Request):
     return common(request, Table2_Service)
+
+
+@table_router.get("/3")
+async def table3(request: Request):
+    return common(request, Table3_Service)

@@ -98,3 +98,23 @@ class Table2_Service(TableService):
         self.write_data_to_table()  # 填写表格数据
         self.xlsx.save()
         return self.xlsx.path.dist
+
+
+class Table3_Service(TableService):
+
+    def __init__(self) -> None:
+        dao: TableDao = Table1_Dao()
+        xlsx: DataToXlsx = DataToXlsx(source="table3", dist="dist3")
+        super().__init__(dao, xlsx)
+
+    def write_data_to_table(self):
+        # 数据列位置
+        data_locs: List[str] = ["D5:D14", "E5:E14", "G5:G14"]
+        datas: List[Station] = self.dao.get_table_data()
+        self.xlsx.write_cow_data(data_locs, datas)
+
+    def dist_table(self) -> str:
+        self.xlsx.write_date()  # 更新表格日期
+        self.write_data_to_table()  # 填写表格数据
+        self.xlsx.save()
+        return self.xlsx.path.dist
