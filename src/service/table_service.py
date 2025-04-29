@@ -3,7 +3,7 @@ from abc import abstractmethod
 from datetime import datetime, timedelta
 from models.table import Station
 from utils.xlsx import DataToXlsx
-from dao.table_dao import TableDao, Table1_Dao
+from dao.table_dao import TableDao, Table1_Dao, Table2_Dao, Table3_Dao
 
 
 class TableService:
@@ -73,7 +73,7 @@ class Table1_Service(TableService):
 class Table2_Service(TableService):
 
     def __init__(self) -> None:
-        dao: TableDao = Table1_Dao()
+        dao: TableDao = Table2_Dao()
         xlsx: DataToXlsx = DataToXlsx(source="table2", dist="dist2")
         super().__init__(dao, xlsx)
 
@@ -103,7 +103,7 @@ class Table2_Service(TableService):
 class Table3_Service(TableService):
 
     def __init__(self) -> None:
-        dao: TableDao = Table1_Dao()
+        dao: TableDao = Table3_Dao()
         xlsx: DataToXlsx = DataToXlsx(source="table3", dist="dist3")
         super().__init__(dao, xlsx)
 
