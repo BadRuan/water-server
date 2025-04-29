@@ -16,7 +16,7 @@ class DataToXlsx:
 
     # 更新填报日期时间
     def write_date(self):
-        self.sheet["A2"] = f"填报日期：{datetime.now().strftime('%Y年%m月%d日 %H时')}"
+        self.sheet["A2"] = f"填报日期：{datetime.now().strftime('%Y年%m月%d日')}"
 
     # 填写每列标题
     def write_columns_head(self, table_head: Dict[str, str]):
