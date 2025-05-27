@@ -6,6 +6,7 @@ from service.table_service import (
     Table1_Service,
     Table2_Service,
     Table3_Service,
+    Table4_Service,
 )
 from service.api_service import ApiService
 
@@ -40,3 +41,8 @@ async def table2(request: Request):
 @table_router.get("/3")
 async def table3(request: Request):
     return common(request, Table3_Service)
+
+
+@table_router.get("/4")
+async def table4(request: Request):
+    return common(request, Table4_Service)

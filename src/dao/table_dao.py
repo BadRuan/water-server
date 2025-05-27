@@ -103,3 +103,18 @@ class Table3_Dao(TableDao):
         ]
 
         return self.fetch_station_data(target)
+
+
+class Table4_Dao(TableDao):
+
+    def __init__(self) -> None:
+        super().__init__()
+
+    def get_table_data(self) -> List[Station]:
+        target = [
+            datetime.now().replace(hour=8),  # 今日 8:00
+            datetime.now().replace(hour=8) - timedelta(days=1),  # 昨日 8:00
+            datetime.now().replace(hour=8) - timedelta(days=365),  # 去年今日 8:00
+        ]
+
+        return self.fetch_station_data(target)

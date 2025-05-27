@@ -54,20 +54,6 @@ class ApiDao:
             return True
         return False
 
-    def query_story(self) -> List[StoryModel]:
-        event_time: str = ""
-        content: str = ""
-
-        query_sql: str = "SELECT `event_time`, `content`  FROM `story`"
-        with DatabaseStorage() as td:
-            results = td.query(query_sql)
-            storys: List[StoryModel] = []
-            for r in results:
-                event_time = r[0]
-                content = r[1]
-                storys.append(StoryModel(event_time=event_time[0:10], content=content))
-            return storys
-
     def query_recently(self) -> List[RecentlyWaterModel]:
         data_list: List[RecentlyWaterModel] = []
         with DatabaseStorage() as td:
