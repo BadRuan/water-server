@@ -1,5 +1,5 @@
-from models.database import DatabaseConfig
-from config.settings import DATABASE_DEV
+from src.models.database import DatabaseConfig
+from src.config.settings import DATABASE_DEV
 
 
 def getDatabase() -> DatabaseConfig:

@@ -1,7 +1,7 @@
 from typing import List
-from models.database import DatabaseConfig
-from models.table import Station
-from models.api_model import StationConfig
+from src.models.database import DatabaseConfig
+from src.models.table import Station
+from src.models.api_model import StationConfig
 
 
 # 定义三线颜色
@@ -9,7 +9,11 @@ DEFAULT_COLOR, SF_COLOR, JJ_COLOR, BZ_COLOR = "000000", "189FA7", "0070C0", "FF0
 
 # 数据库参数
 DATABASE_DEV = DatabaseConfig(
-    url="127.0.0.1", port=6041, user="root", password="Deepseek666", database="water"
+    url="127.0.0.1",
+    port=6041,
+    user="root",
+    password="Deepseek666",
+    database="water",
 )
 
 STATIONS: List[Station] = [

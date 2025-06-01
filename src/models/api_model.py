@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from datetime import datetime
 
 
 class CountModel(BaseModel):
@@ -7,11 +6,6 @@ class CountModel(BaseModel):
     this_year_count: int
     visit_count: int
     download_count: int
-
-
-class StoryModel(BaseModel):
-    event_time: str
-    content: str
 
 
 class StationConfig(BaseModel):

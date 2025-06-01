@@ -2,12 +2,9 @@ from typing import List
 from datetime import datetime, timedelta
 from abc import abstractmethod
 from copy import deepcopy
-from models.table import WaterLevel, Station
-from config.settings import STATIONS
-from utils.logger import Logger
-from utils.storage import DatabaseStorage
-
-logger = Logger(__name__)
+from src.models.table import WaterLevel, Station
+from src.config.settings import STATIONS
+from src.utils.storage import Storage
 
 
 class TableDao:
@@ -29,17 +26,17 @@ class TableDao:
     def fetch_station_data(self, time_points: List[datetime]) -> List[Station]:
         # 对于每个时间点，查询并添加水位数据
         for time_point in time_points:
-            waterlevels = self.select_waterlevel(time_point)
+            waterlevels = self._select_waterlevel(time_point)
             self.add_waterleveldata_to_stations(self.stations, waterlevels)
         return self.stations
 
     # 查询指定日期时间的整点水位
-    def select_waterlevel(self, date: datetime) -> List[WaterLevel]:
+    def _select_waterlevel(self, date: datetime) -> List[WaterLevel]:
         # 格式化日期时间字符串
         formatted_date = date.strftime("%Y-%m-%d %H:00:00")
         # 构造整点SQL语句
         sql = f"SELECT `ts`, `current`, `STCD`, `NAME` FROM waterlevel WHERE ts='{formatted_date}'"
-        with DatabaseStorage() as td:
+        with Storage() as td:
             results = td.query(sql)
             # 将查询结果转换为WaterLevel对象列表
             return [
@@ -70,7 +67,6 @@ class Table1_Dao(TableDao):
             datetime.now().replace(hour=8) - timedelta(weeks=1),  # 上周 8:00
             datetime.now().replace(hour=8) - timedelta(days=365),  # 去年今日 8:00
         ]
-
         return self.fetch_station_data(target)
 
 
@@ -86,7 +82,6 @@ class Table2_Dao(TableDao):
             datetime.now() - timedelta(hours=4),  # 四小时前
             datetime.now() - timedelta(hours=8),  # 八小时前
         ]
-
         return self.fetch_station_data(target)
 
 
@@ -101,7 +96,6 @@ class Table3_Dao(TableDao):
             datetime.now().replace(hour=8) - timedelta(days=3),  # 三日前 8:00
             datetime.now().replace(hour=8) - timedelta(days=365),  # 去年今日 8:00
         ]
-
         return self.fetch_station_data(target)
 
 
@@ -116,5 +110,4 @@ class Table4_Dao(TableDao):
             datetime.now().replace(hour=8) - timedelta(days=1),  # 昨日 8:00
             datetime.now().replace(hour=8) - timedelta(days=365),  # 去年今日 8:00
         ]
-
         return self.fetch_station_data(target)

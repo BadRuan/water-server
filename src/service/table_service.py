@@ -1,9 +1,9 @@
 from typing import List, Dict
 from abc import abstractmethod
 from datetime import datetime, timedelta
-from models.table import Station
-from utils.xlsx import DataToXlsx
-from dao.table_dao import TableDao, Table1_Dao, Table2_Dao, Table3_Dao, Table4_Dao
+from src.models.table import Station
+from src.utils.xlsx import DataToXlsx
+from src.dao.table_dao import TableDao, Table1_Dao, Table2_Dao, Table3_Dao, Table4_Dao
 
 
 class TableService:

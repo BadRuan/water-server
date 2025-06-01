@@ -2,9 +2,9 @@ import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from routes.table import table_router
-from routes.api import api_router
-from service.api_service import ApiService
+from src.routes.table import table_router
+from src.routes.api import api_router
+from src.service.api_service import ApiService
 
 
 app = FastAPI()

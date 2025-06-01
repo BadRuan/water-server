@@ -1,8 +1,8 @@
 from typing import List
-from models.api_model import CountModel, StoryModel, RecentlyWaterModel
 from datetime import datetime
-from utils.storage import DatabaseStorage
-from config.settings import RAW_STATIONS
+from src.config.settings import RAW_STATIONS
+from src.models.api_model import CountModel, RecentlyWaterModel
+from src.utils.storage import Storage
 
 
 class ApiDao:
@@ -21,7 +21,7 @@ class ApiDao:
         visit_count_SQL: str = f"SELECT count(*) FROM website_access"
         download_count_SQL: str = f"SELECT count(*) FROM table_downloads"
 
-        with DatabaseStorage() as td:
+        with Storage() as td:
 
             results = td.query(total_count_SQL)
             for r in results:
@@ -49,14 +49,14 @@ class ApiDao:
         SQL: str = (
             f"INSERT INTO {table_name}  VALUES ('{formatted_date}.000', '{ip_address}')"
         )
-        with DatabaseStorage() as td:
+        with Storage() as td:
             td.query(SQL)
             return True
         return False
 
     def query_recently(self) -> List[RecentlyWaterModel]:
         data_list: List[RecentlyWaterModel] = []
-        with DatabaseStorage() as td:
+        with Storage() as td:
             for station in RAW_STATIONS:
                 query_sql: str = (
                     f"select TO_CHAR(ts, 'YYYY-mm-dd hh24:mi:ss'), `current` from `t{station.stcd}` ORDER BY `ts` DESC LIMIT 1"

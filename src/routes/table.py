@@ -1,14 +1,14 @@
 from datetime import datetime
 from fastapi import APIRouter, Request
 from fastapi.responses import FileResponse
-from service.table_service import (
+from src.service.table_service import (
     TableService,
     Table1_Service,
     Table2_Service,
     Table3_Service,
     Table4_Service,
 )
-from service.api_service import ApiService
+from src.service.api_service import ApiService
 
 
 table_router = APIRouter(tags=["tables"])
