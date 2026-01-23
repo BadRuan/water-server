@@ -1,11 +1,14 @@
 import logging
-import sys
 from pathlib import Path
 from logging.handlers import TimedRotatingFileHandler
+from rich.logging import RichHandler
+from rich.traceback import install
 
 
 def Logger(name: str):
-    logger = logging.getLogger(name)
+	
+    logger=logging.getLogger(name)
+    install(show_locals=True) # 全局安装 rich 异常美化
     logger.setLevel(logging.DEBUG)
 
     # 清除之前的处理器（防止重复）
@@ -17,11 +20,16 @@ def Logger(name: str):
     log_dir.mkdir(exist_ok=True)
 
     # 控制台处理器
+    console_handler = RichHandler(
+        rich_tracebacks=True,
+        tracebacks_show_locals=True,
+        level=logging.INFO
+    )
     console_format = logging.Formatter("%(asctime)s | %(levelname)-8s | %(message)s")
     file_format = logging.Formatter(
         "%(asctime)s | %(name)-20s | %(levelname)-8s | %(message)s"
     )
-    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setFormatter(console_format)
 
     # 文件处理器（按天轮转）
     file_handler = TimedRotatingFileHandler(
@@ -30,10 +38,10 @@ def Logger(name: str):
         backupCount=7,  # 保留7天
         encoding="utf-8",
     )
-
+	
     # 设置文件和控制台日志显示级别
-    console_handler.setLevel(logging.INFO)
     file_handler.setLevel(logging.DEBUG)
+    
 
     console_handler.setFormatter(console_format)
     file_handler.setFormatter(file_format)
