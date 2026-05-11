@@ -11,15 +11,13 @@ def Logger(name: str):
     install(show_locals=True) # 全局安装 rich 异常美化
     logger.setLevel(logging.DEBUG)
 
-    # 清除之前的处理器（防止重复）
     if logger.hasHandlers():
         logger.handlers.clear()
 
-    # 创建日志目录
+
     log_dir = Path(__file__).parent.parent.parent / "logs"
     log_dir.mkdir(exist_ok=True)
 
-    # 控制台处理器
     console_handler = RichHandler(
         rich_tracebacks=True,
         tracebacks_show_locals=True,
@@ -42,7 +40,6 @@ def Logger(name: str):
     # 设置文件和控制台日志显示级别
     file_handler.setLevel(logging.DEBUG)
     
-
     console_handler.setFormatter(console_format)
     file_handler.setFormatter(file_format)
 
