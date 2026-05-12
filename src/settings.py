@@ -3,7 +3,7 @@ from enum import Enum
 from src.model import DataConfig, Station
 
 
-postgres: DataConfig = DataConfig(url='100.68.9.83', user='postgres', password='Deepseek666', port=54321, database='water') 
+postgres: DataConfig = DataConfig(url='100.122.72.21', user='postgres', password='E,*f*YdGgYSgqfze1tLqc0Pm8CK2', port=36999, database='water') 
 
 class COLOR(Enum):
     Default = "000000"

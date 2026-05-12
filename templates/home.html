@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block title %}主页{% endblock %}
+
+{% block content %}
+<!-- 功能特点 -->
+<section class="mb-12">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800">功能特点</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- 卡片 1 -->
+        <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+            <div class="text-blue-600 text-3xl mb-3">✓</div>
+            <h3 class="font-bold text-lg mb-2">简单</h3>
+            <p class="text-gray-600 text-sm">无需复杂配置，打开即用，直接单击即可查看对应水位数据。</p>
+        </div>
+        <!-- 卡片 2 -->
+        <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+            <div class="text-blue-600 text-3xl mb-3">📊</div>
+            <h3 class="font-bold text-lg mb-2">准确</h3>
+            <p class="text-gray-600 text-sm">数据直连安徽水信息网站，源头抓取，保证数据真实可靠。</p>
+        </div>
+        <!-- 卡片 3 -->
+        <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+            <div class="text-blue-600 text-3xl mb-3">⚡</div>
+            <h3 class="font-bold text-lg mb-2">高效</h3>
+            <p class="text-gray-600 text-sm">立即出表，替代传统人工录入，大幅降低操作差错。</p>
+        </div>
+        <!-- 卡片 4 -->
+        <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+            <div class="text-blue-600 text-3xl mb-3">🌐</div>
+            <h3 class="font-bold text-lg mb-2">便捷</h3>
+            <p class="text-gray-600 text-sm">基于Web架构，跨平台使用，手机、电脑均无局限性。</p>
+        </div>
+    </div>
+</section>
+
+<!-- 最新水位表格 -->
+<section class="mb-12 bg-white p-6 rounded-xl shadow">
+    <h2 class="text-xl font-bold mb-4">最新水位数据</h2>
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">序号</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">站名</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">当前水位(m)</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">昨日同期水位(m)</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">最新水位时间</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">较昨日同期 +涨-落</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                {% for i in r %}
+                <tr class="hover:bg-blue-50">
+                    <td class="px-4 py-3">{{ loop.index }}</td>
+                    <td class="px-4 py-3 font-medium">{{ i.name }}</td>
+                    <td class="px-4 py-3">{{ i.water_item.height }}</td>
+                    <td class="px-4 py-3">{{ i.water_item.yesterday_height }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-500">{{ i.water_item.timestamp }}</td>
+                    <td class="px-4 py-3">
+
+
+                        {% if i.water_item.height-i.water_item.yesterday_height==0 %}
+                        <span class="text-gray-500">0.00m</span>
+                        {% elif i.water_item.height-i.water_item.yesterday_height>0 %}
+                        <span class="text-red-500">+{{ i.water_item.height-i.water_item.yesterday_height }}m</span>
+                        {% elif i.water_item.height-i.water_item.yesterday_height<0 %} <span class="text-green-500">{{
+                            i.water_item.height-i.water_item.yesterday_height }}m</span>
+                            {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section>
+    <h2 class="text-2xl font-bold mb-6">水位表获取模块</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <div
+            class="group cursor-pointer bg-white rounded-xl shadow hover:shadow-2xl transition duration-300 overflow-hidden">
+            <div class="h-32 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                <span class="text-white text-4xl opacity-80"> 表 01 </span>
+            </div>
+            <div class="p-5">
+                <h3 class="font-bold text-lg mb-2 group-hover:text-blue-700">内容预览</h3>
+                <ul class="text-gray-600 text-sm">
+                    <li>1、 今日 8:00 水位</li>
+                    <li>2、 昨日 8:00 水位</li>
+                    <li>3、 上周同期 8:00 水位</li>
+                    <li>4、 去年同期 8:00 水位</li>
+                    <li>5、 今日昨日8:00 水位对比</li>
+                </ul>
+                <a href="/table/1">
+                    <button
+                        class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">点击下载</button>
+                </a>
+            </div>
+        </div>
+
+        <div
+            class="group cursor-pointer bg-white rounded-xl shadow hover:shadow-2xl transition duration-300 overflow-hidden">
+            <div class="h-32 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                <span class="text-white text-4xl opacity-80"> 表 02 </span>
+            </div>
+            <div class="p-5">
+                <h3 class="font-bold text-lg mb-2 group-hover:text-blue-700">内容预览</h3>
+                <ul class="text-gray-600 text-sm">
+                    <li>1、 今日 8:00 水位</li>
+                    <li>2、 昨日 8:00 水位</li>
+                    <li>3、 上周同期 8:00 水位</li>
+                    <li>4、 去年同期 8:00 水位</li>
+                    <li>5、 今日昨日8:00 水位对比</li>
+                </ul>
+                <a target="_blank" href="/table/2">
+                    <button
+                        class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">点击下载</button>
+                </a>
+            </div>
+        </div>
+
+        <div
+            class="group cursor-pointer bg-white rounded-xl shadow hover:shadow-2xl transition duration-300 overflow-hidden">
+            <div class="h-32 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                <span class="text-white text-4xl opacity-80"> 表 03 </span>
+            </div>
+            <div class="p-5">
+                <h3 class="font-bold text-lg mb-2 group-hover:text-blue-700">内容预览</h3>
+                <ul class="text-gray-600 text-sm">
+                    <li>1、 今日 8:00 水位</li>
+                    <li>2、 三日前 8:00 水位</li>
+                    <li>3、 两比涨落</li>
+                    <li>4、 去年同期 8:00 水位</li>
+                </ul>
+                <a href="/table/3">
+                    <button
+                        class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">点击下载</button>
+                </a>
+            </div>
+        </div>
+
+
+        <div
+            class="group cursor-pointer bg-white rounded-xl shadow hover:shadow-2xl transition duration-300 overflow-hidden">
+            <div class="h-32 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                <span class="text-white text-4xl opacity-80"> 表 04 </span>
+            </div>
+            <div class="p-5">
+                <h3 class="font-bold text-lg mb-2 group-hover:text-blue-700">内容预览</h3>
+                <ul class="text-gray-600 text-sm">
+                    <li>1、 今日 8:00 水位</li>
+                    <li>2、 昨日 8:00 水位</li>
+                    <li>3、 两比涨落</li>
+                    <li>4、 去年同期 8:00 水位</li>
+                </ul>
+
+                <a href="/table/4">
+                    <button
+                        class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">点击下载</button>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

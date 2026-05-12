@@ -22,4 +22,5 @@ class Station:
 class WaterItem(NamedTuple):
     code: int 
     height: float
+    yesterday_height: float
     timestamp: datetime

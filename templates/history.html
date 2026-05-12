@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}开发历程{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold mb-10 text-center">开发历程</h1>
+
+    <div class="relative border-l-2 border-blue-200 ml-4">
+
+        <!-- Item 1 -->
+        <div class="mb-10 ml-8">
+            <span
+                class="absolute flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full -left-4 ring-4 ring-white">🚀</span>
+            <h3 class="font-bold text-lg">项目初步立项</h3>
+            <time class="text-sm text-gray-500">2024-04-28</time>
+            <p class="mt-2 text-gray-600">确定需求，初步构思防汛小助手,考虑技术选型，搭建基础技术框架。</p>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="mb-10 ml-8">
+            <span
+                class="absolute flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full -left-4 ring-4 ring-white">📊</span>
+            <h3 class="font-bold text-lg">核心功能开发</h3>
+            <time class="text-sm text-gray-500">2024-05-02</time>
+            <p class="mt-2 text-gray-600">完成爬虫模块，成功获取鸠江流域主要站点水位数据，解决数据源的问题;初步尝试一键生成水位表。</p>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="mb-10 ml-8">
+            <span
+                class="absolute flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full -left-4 ring-4 ring-white">🎨</span>
+            <h3 class="font-bold text-lg">模式架构调整</h3>
+            <time class="text-sm text-gray-500">2024-06-23</time>
+            <p class="mt-2 text-gray-600">项目调整为Web版本, 解决部分电脑客户端无法运行程序问题。</p>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="mb-10 ml-8">
+            <span
+                class="absolute flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full -left-4 ring-4 ring-white">⛷</span>
+            <h3 class="font-bold text-lg">功能优化调整</h3>
+            <time class="text-sm text-gray-500">2025-05-20</time>
+            <p class="mt-2 text-gray-600">根据实际使用需求，增加显示最近水位功能。</p>
+        </div>
+
+        <!-- Item 5 -->
+        <div class="mb-10 ml-8">
+            <span
+                class="absolute flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full -left-4 ring-4 ring-white">💪</span>
+            <h3 class="font-bold text-lg">项目整体重构</h3>
+            <time class="text-sm text-gray-500">2026-05-12</time>
+            <p class="mt-2 text-gray-600">更换后端数据库技术选型；完成爬虫重构；完成后端重构；界面采用 Tailwind CSS 美化界面，优化响应式布局，提升用户体验。</p>
+        </div>
+
+
+    </div>
+</div>
+{% endblock %}
