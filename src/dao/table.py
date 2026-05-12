@@ -28,12 +28,12 @@ def today_or_yesterday(today, yesterday):
         return yesterday
 
 # 数据库查询函数
-def get_station_data(station: Station, target_datetime: datetime) -> float:
+async def get_station_data(station: Station, target_datetime: datetime) -> float:
     formatted_date: str = target_datetime.strftime("%Y-%m-%d %H:%M:%S")
-    with Storage() as storage:
+    async with Storage() as storage:
         sql: str = f"select (height) from station_{station.code} where ts = '{formatted_date}';"
         log.debug(sql)
-        result = storage.query_one(sql)
+        result = await storage.query_one(sql)
         if result is None:
             return 0
         else:
@@ -93,14 +93,14 @@ class DistXlsx:
             self.sheet.column_dimensions[column].hidden = True # type: ignore
 
     # 填写每列数据
-    def write_cow_data(self, loc_list: List[str], target_datetimes: List[datetime]) -> None:
+    async def write_cow_data(self, loc_list: List[str], target_datetimes: List[datetime]) -> None:
         # 为每个位置填充数据
         for column_item, target_datetime in zip(loc_list, target_datetimes): # example: [D5:D14]
             start , end = column_item.split(':') # ('D5', 'D14')
             lie_head: str = start[0] # 'D'
             index_list = range(int(start[1:]), int(end[1:])+1) # range(5, 15) = [5, 6, ... , 14]
             for station, index in zip(station_list, index_list):
-                height: float = get_station_data(station, target_datetime)
+                height: float = await get_station_data(station, target_datetime)
                 log.debug(f"Cell: {lie_head}{index} => {station.name} : {height}")
                 cell_location: str = lie_head + str(index)
                 self.write_to_cell(cell_location, height)
@@ -111,7 +111,7 @@ class DistXlsx:
         self.wb.save(self.path.dist)
     
     @abstractmethod
-    def dist(self) -> None:
+    async def dist(self) -> None:
         ...
 
 
@@ -120,7 +120,7 @@ class DistTable_1(DistXlsx):
     def __init__(self) -> None:
         super().__init__('table1')
     
-    def dist(self):
+    async def dist(self):
         self.write_date()
 
         target_datetimes: List[datetime] = [
@@ -130,7 +130,7 @@ class DistTable_1(DistXlsx):
             datetime.now().replace(hour=8, minute=0, second=0) - timedelta(days=365),  # 去年今日 8:00
         ]
         data_locs: List[str] = ["D5:D14", "E5:E14", "F5:F14", "G5:G14"]
-        self.write_cow_data(data_locs, target_datetimes)
+        await self.write_cow_data(data_locs, target_datetimes)
 
         self.save()
 
@@ -139,7 +139,7 @@ class DistTable_2(DistXlsx):
     def __init__(self) -> None:
         super().__init__('table2')
     
-    def dist(self):
+    async def dist(self):
         self.write_date()
 
         self.write_to_cell('D3',generate_time_description(0))
@@ -152,7 +152,7 @@ class DistTable_2(DistXlsx):
             datetime.now().replace(minute=0, second=0) - timedelta(hours=8),  # 八小时前
         ]
         data_locs: List[str] = ["D5:D14", "E5:E14", "F5:F14"]
-        self.write_cow_data(data_locs, target_datetimes)
+        await self.write_cow_data(data_locs, target_datetimes)
 
         self.save()
  
@@ -161,7 +161,7 @@ class DistTable_3(DistXlsx):
     def __init__(self) -> None:
         super().__init__('table3')
     
-    def dist(self):
+    async def dist(self):
         self.write_date()
 
         target_datetimes: List[datetime] = [
@@ -170,7 +170,7 @@ class DistTable_3(DistXlsx):
             datetime.now().replace(hour=8, minute=0, second=0) - timedelta(days=365),  # 去年今日 8:00
         ]
         data_locs: List[str] = ["D5:D14", "E5:E14", "G5:G14"]
-        self.write_cow_data(data_locs, target_datetimes)
+        await self.write_cow_data(data_locs, target_datetimes)
 
         self.save()
   
@@ -179,7 +179,7 @@ class DistTable_4(DistXlsx):
     def __init__(self) -> None:
         super().__init__('table4')
     
-    def dist(self):
+    async def dist(self):
         self.write_date()
 
         target_datetimes: List[datetime] = [
@@ -188,7 +188,7 @@ class DistTable_4(DistXlsx):
             datetime.now().replace(hour=8, minute=0, second=0) - timedelta(days=365),  # 去年今日 8:00
         ]
         data_locs: List[str] = ["D5:D14", "E5:E14", "G5:G14"]
-        self.write_cow_data(data_locs, target_datetimes)
+        await self.write_cow_data(data_locs, target_datetimes)
 
         self.save()
        

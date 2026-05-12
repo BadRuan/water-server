@@ -43,9 +43,9 @@
                 <tr>
                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">序号</th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">站名</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">当前水位(m)</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">昨日同期水位(m)</th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">最新水位时间</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">最新水位(m)</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">昨日同期水位(m)</th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">较昨日同期 +涨-落</th>
                 </tr>
             </thead>
@@ -54,9 +54,9 @@
                 <tr class="hover:bg-blue-50">
                     <td class="px-4 py-3">{{ loop.index }}</td>
                     <td class="px-4 py-3 font-medium">{{ i.name }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-500">{{ i.water_item.timestamp }}</td>
                     <td class="px-4 py-3">{{ i.water_item.height }}</td>
                     <td class="px-4 py-3">{{ i.water_item.yesterday_height }}</td>
-                    <td class="px-4 py-3 text-sm text-gray-500">{{ i.water_item.timestamp }}</td>
                     <td class="px-4 py-3">
 
 
@@ -76,13 +76,13 @@
 </section>
 
 <section>
-    <h2 class="text-2xl font-bold mb-6">水位表获取模块</h2>
+    <h2 class="text-2xl font-bold mb-6">一键获取水位表</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
         <div
             class="group cursor-pointer bg-white rounded-xl shadow hover:shadow-2xl transition duration-300 overflow-hidden">
             <div class="h-32 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
-                <span class="text-white text-4xl opacity-80"> 表 01 </span>
+                <span class="text-white text-4xl opacity-80"> 水位表 1 </span>
             </div>
             <div class="p-5">
                 <h3 class="font-bold text-lg mb-2 group-hover:text-blue-700">内容预览</h3>
@@ -103,16 +103,14 @@
         <div
             class="group cursor-pointer bg-white rounded-xl shadow hover:shadow-2xl transition duration-300 overflow-hidden">
             <div class="h-32 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
-                <span class="text-white text-4xl opacity-80"> 表 02 </span>
+                <span class="text-white text-4xl opacity-80"> 水位表 2 </span>
             </div>
             <div class="p-5">
                 <h3 class="font-bold text-lg mb-2 group-hover:text-blue-700">内容预览</h3>
                 <ul class="text-gray-600 text-sm">
-                    <li>1、 今日 8:00 水位</li>
-                    <li>2、 昨日 8:00 水位</li>
-                    <li>3、 上周同期 8:00 水位</li>
-                    <li>4、 去年同期 8:00 水位</li>
-                    <li>5、 今日昨日8:00 水位对比</li>
+                    <li>1、 当前整点水位</li>
+                    <li>2、 前 4 小时水位</li>
+                    <li>3、 前 8 小时水位</li>
                 </ul>
                 <a target="_blank" href="/table/2">
                     <button
@@ -124,7 +122,7 @@
         <div
             class="group cursor-pointer bg-white rounded-xl shadow hover:shadow-2xl transition duration-300 overflow-hidden">
             <div class="h-32 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
-                <span class="text-white text-4xl opacity-80"> 表 03 </span>
+                <span class="text-white text-4xl opacity-80"> 水位表 3 </span>
             </div>
             <div class="p-5">
                 <h3 class="font-bold text-lg mb-2 group-hover:text-blue-700">内容预览</h3>
@@ -145,7 +143,7 @@
         <div
             class="group cursor-pointer bg-white rounded-xl shadow hover:shadow-2xl transition duration-300 overflow-hidden">
             <div class="h-32 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
-                <span class="text-white text-4xl opacity-80"> 表 04 </span>
+                <span class="text-white text-4xl opacity-80"> 水位表 4 </span>
             </div>
             <div class="p-5">
                 <h3 class="font-bold text-lg mb-2 group-hover:text-blue-700">内容预览</h3>
