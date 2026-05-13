@@ -1,5 +1,6 @@
 from datetime import datetime
 from quart import Quart, render_template, send_file
+from uvicorn import run
 from src.dao import get_recently_data, DistTable_1, DistTable_2, DistTable_3, DistTable_4
 
 
@@ -50,4 +51,5 @@ async def get_table_4():
     return await send_file(dist_path,as_attachment=True, attachment_filename=f'{datetime.now().strftime('%Y年%m月%d日-水位表')}.xlsx')
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5023)
+    run(app="main:app", host="0.0.0.0", port=80)
+    # app.run(debug=True, host='0.0.0.0', port=50231)
