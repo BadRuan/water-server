@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}开发历程{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold mb-10 text-center text-slate-800">开发历程</h1>
+
+    <div class="relative border-l-2 border-blue-200 ml-4">
+
+        <!-- Item 1 -->
+        <div class="mb-10 ml-8">
+            <span
+                class="absolute flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full -left-4 ring-4 ring-white">🚀</span>
+            <h3 class="font-bold text-lg text-slate-800">项目初步立项</h3>
+            <time class="text-sm text-slate-500">2024-04-28</time>
+            <p class="mt-2 text-slate-600">确定需求，初步构思防汛小助手，考虑技术选型，搭建基础技术框架。</p>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="mb-10 ml-8">
+            <span
+                class="absolute flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full -left-4 ring-4 ring-white">📊</span>
+            <h3 class="font-bold text-lg text-slate-800">核心功能开发</h3>
+            <time class="text-sm text-slate-500">2024-05-02</time>
+            <p class="mt-2 text-slate-600">完成爬虫模块，成功获取鸠江流域主要站点水位数据，解决数据源的问题；初步尝试一键生成水位表。</p>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="mb-10 ml-8">
+            <span
+                class="absolute flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full -left-4 ring-4 ring-white">🎨</span>
+            <h3 class="font-bold text-lg text-slate-800">模式架构调整</h3>
+            <time class="text-sm text-slate-500">2024-06-23</time>
+            <p class="mt-2 text-slate-600">项目调整为Web版本, 解决部分电脑客户端无法运行程序问题，满足跨设备需求，后台更新升级功能用户端无感。</p>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="mb-10 ml-8">
+            <span
+                class="absolute flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full -left-4 ring-4 ring-white">⛷</span>
+            <h3 class="font-bold text-lg text-slate-800">功能优化调整</h3>
+            <time class="text-sm text-slate-500">2025-05-20</time>
+            <p class="mt-2 text-slate-600">根据实际使用需求，增加显示最近水位功能，在点击下载之前即可判断是否已有当前水位数据。</p>
+        </div>
+
+        <!-- Item 5 -->
+        <div class="mb-10 ml-8">
+            <span
+                class="absolute flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full -left-4 ring-4 ring-white">💪</span>
+            <h3 class="font-bold text-lg text-slate-800">项目年度重构</h3>
+            <time class="text-sm text-slate-500">2026-05-12</time>
+            <p class="mt-2">
+            <ul class="text-slate-600">
+                <li>1. 调整数据库技术选型，由TDengine调整为PostgreSQL，满足未来多元化需求，升级潜力大；</li>
+                <li>2. 完成爬虫端重构，结构清晰，后期调整方便；</li>
+                <li>3. 完成Web后端重构；</li>
+                <li>4. UI界面采用 Tailwind CSS 美化界面，优化响应式布局，提升用户体验。</li>
+            </ul>
+            </p>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

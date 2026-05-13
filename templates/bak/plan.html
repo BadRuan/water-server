@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}开发计划{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-8">开发计划</h1>
+
+    <div class="space-y-8">
+        <!-- 阶段 1 -->
+        <div class="bg-white p-6 rounded-xl shadow">
+            <div class="flex justify-between mb-2">
+                <h3 class="font-bold text-lg">第一阶段：数据采集与展示</h3>
+                <span class="text-sm bg-green-100 text-green-800 px-3 py-1 rounded-full">已完成</span>
+            </div>
+            <p class="text-gray-600 mb-4">对接安徽水信息网，实现基础水位数据的抓取与表格渲染。</p>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="bg-green-600 h-2.5 rounded-full" style="width: 100%"></div>
+            </div>
+        </div>
+
+        <!-- 阶段 2 -->
+        <div class="bg-white p-6 rounded-xl shadow">
+            <div class="flex justify-between mb-2">
+                <h3 class="font-bold text-lg">第二阶段：最新数据一键填写</h3>
+                <span class="text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded-full">已完成</span>
+            </div>
+            <p class="text-gray-600 mb-4">提前准备好不同场景需求的水位表，点击即可一键获取。</p>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="bg-blue-600 h-2.5 rounded-full" style="width: 100%"></div>
+            </div>
+        </div>
+
+        <!-- 阶段 3 -->
+        <div class="bg-white p-6 rounded-xl shadow">
+            <div class="flex justify-between mb-2">
+                <h3 class="font-bold text-lg">第三阶段：预警系统</h3>
+                <span class="text-sm bg-gray-100 text-gray-800 px-3 py-1 rounded-full">待开始</span>
+            </div>
+            <p class="text-gray-600 mb-4">设置水位阈值，当超过警戒线时自动发送邮件/短信通知。</p>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="bg-gray-400 h-2.5 rounded-full" style="width: 10%"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
