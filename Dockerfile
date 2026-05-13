@@ -1,4 +1,4 @@
-FROM python:3.11
+FROM docker.1ms.run/library/python:3.11
 ENV TZ Asia/Shanghai
 WORKDIR /app
 COPY . /app
