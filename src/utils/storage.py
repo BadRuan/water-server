@@ -21,7 +21,9 @@ class Storage():
             await self.init_connect()
             
     async def init_connect(self):
-        self.connection = await connect(host=postgres.url, user=postgres.user, password=postgres.password, port=postgres.port, database=postgres.database)
+        self.connection = await connect(host=postgres.url, user=postgres.user, password=postgres.password, port=postgres.port, database=postgres.database, server_settings={
+            'timezone': 'UTC'  # 设置时区，例如 'UTC' 或 'Asia/Shanghai'
+        })
                    
     async def query_one(self, sql: str) -> Optional[Any]:
         if self.connection is not None:
