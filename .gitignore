@@ -9,7 +9,4 @@ ENV
 logs/
 *.log
 cache/
-dist/table1.xlsx
-dist/table2.xlsx
-dist/table3.xlsx
-dist/table4.xlsx
+dist/*.xlsx

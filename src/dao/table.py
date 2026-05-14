@@ -33,7 +33,7 @@ async def get_station_data(station: Station, target_datetime: datetime) -> float
     async with Storage() as storage:
         sql: str = f"select (height) from station_{station.code} where ts = '{formatted_date}';"
         log.debug(sql)
-        result = await storage.query_one(sql)
+        result = await storage.fetch_row_one(sql)
         if result is None:
             return 0
         else:
