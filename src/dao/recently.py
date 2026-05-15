@@ -21,8 +21,8 @@ async def get_recently_data() -> List[RecentlyBaseStation]:
             if result is not None:
                 target_time: datetime = result[0] - timedelta(days=1)
                 target_time = target_time.replace(minute=0,second=0)
-                sql_for_yesterday: str = f"select (ts) from station_{base_station.code} where ts = '{target_time}'"
-                yesterday = await storage.fetch_one(sql_for_yesterday)
+                sql_for_yesterday: str = f"select * from station_{base_station.code} where ts = '{target_time}';"
+                yesterday = await storage.fetch_row_one(sql_for_yesterday)
                 if yesterday is not None:
                     water_item_tmp = WaterItem(height=result[1], yesterday_height=yesterday[1],timestamp=result[0], code=base_station.code)
                     recently_data.append(RecentlyBaseStation(code=base_station.code, name=base_station.name, water_item=water_item_tmp))

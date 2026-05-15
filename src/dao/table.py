@@ -33,11 +33,11 @@ async def get_station_data(station: Station, target_datetime: datetime) -> float
     async with Storage() as storage:
         sql: str = f"select (height) from station_{station.code} where ts = '{formatted_date}';"
         log.debug(sql)
-        result = await storage.fetch_row_one(sql)
+        result = await storage.fetch_one(sql)
         if result is None:
             return 0
         else:
-            return result[0]
+            return result
     return 0
 
 # 时间描述的函数
@@ -184,7 +184,8 @@ class DistTable_4(DistXlsx):
 
         target_datetimes: List[datetime] = [
             datetime.now().replace(hour=8, minute=0, second=0),  # 今日 8:00
-            datetime.now().replace(hour=8) - timedelta(days=1),  # 昨日 8:00
+            datetime.now().replace(hour=8, minute=0, second=0) - timedelta(days=1),  # 昨日 8:00
+            datetime.now().replace(hour=8, minute=0, second=0) - timedelta(days=1),  # 昨日 8:00
             datetime.now().replace(hour=8, minute=0, second=0) - timedelta(days=365),  # 去年今日 8:00
         ]
         data_locs: List[str] = ["D5:D14", "E5:E14", "G5:G14"]
