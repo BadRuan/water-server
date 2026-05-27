@@ -1,6 +1,7 @@
 from datetime import datetime
 from quart import Quart, render_template, send_file
 from uvicorn import run
+from src.settings import nav_list
 from src.dao import get_recently_data, DistTable_1, DistTable_2, DistTable_3, DistTable_4
 
 
@@ -10,15 +11,15 @@ app = Quart(__name__)
 @app.route('/', methods=['GET'])
 async def index():
     r_list = await get_recently_data()
-    return await render_template('home.html', r=r_list)
+    return await render_template('home.html', r=r_list, nav=nav_list)
 
 @app.route('/plan', methods=['GET'])
 async def plan():
-    return await render_template('plan.html')
+    return await render_template('plan.html', nav=nav_list)
 
 @app.route('/history', methods=['GET'])
 async def history():
-    return await render_template('history.html')
+    return await render_template('history.html', nav=nav_list)
 
 @app.get('/table/1')
 async def get_table_1():

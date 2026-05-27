@@ -1,0 +1,25 @@
+<header class="bg-white h-14 shadow-sm border-b border-gray-100">
+    <div class="w-4xl h-full mx-auto flex items-center justify-between">
+        <div class="md:flex">
+            <div class="w-full">
+                <img src="{{ url_for('static', filename='logo.svg') }}" alt="logo" />
+            </div>
+        </div>
+        <nav class="flex gap-4 items-center">
+            {% for item in nav %}
+            {% if request.path == item.url %}
+            <a class="w-20 nav-item-active" href="{{ item.url }}">
+                <div class="text-primary-300 text-center text-base font-medium">
+                    {{ item.title }}</div>
+                <div class="text-primary-400 text-center text-xs">{{ item.sec_title }}</div>
+            </a>
+            {% else %}
+            <a class="w-20 group nav-item" href="{{ item.url }}">
+                <div class="text-gray-900 text-center text-base group-hover:text-primary-300">{{ item.title }}</div>
+                <div class="text-gray-400 text-center text-xs group-hover:text-primary-400">{{ item.sec_title }}</div>
+            </a>
+            {% endif %}
+            {% endfor %}
+        </nav>
+    </div>
+</header>

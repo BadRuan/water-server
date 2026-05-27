@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, NamedTuple
 from enum import Enum
 from src.model import DataConfig, Station
 
@@ -10,6 +10,11 @@ class COLOR(Enum):
     SheFang = "189FA7"
     JingJie = "0070C0"
     BaoZheng = "FF0000"
+
+class Nav(NamedTuple):
+    url: str
+    title: str
+    sec_title: str
 
 STATIONS: List[Tuple[int, float, float, float, str]] = [
     (62904500, 11.5, 13.2, 15.84, "无为大堤"),
@@ -25,3 +30,9 @@ STATIONS: List[Tuple[int, float, float, float, str]] = [
 ]
 
 station_list: List[Station] = [Station(code=s[0], name=s[4], sfsw=s[1], jjsw=s[2], bzsw=s[3]) for s in STATIONS]
+
+nav_list: List[Nav] = [
+    Nav(url='/',title='网页首页', sec_title='Home Page'),
+    Nav(url='/plan',title='未来计划', sec_title='Future Plans'),
+    Nav(url='/history',title='开发历程', sec_title='Code History')
+]

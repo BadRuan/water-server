@@ -1,20 +1,20 @@
-{% extends "base.html" %}
+{% extends "common/base.html" %}
 
 {% block title %}未来计划{% endblock %}
 
 {% block content %}
-<main class="w-4xl m-auto">
+<main class="w-4xl m-auto pt-8">
     <!-- 1. 标题区域：独立出来，不需要背景色和圆角，或者单独设置 -->
     <div class="text-center">
-        <h1 class="text-2xl font-bold text-gray-800 my-6">未来计划</h1>
+        <h1 class="text-2xl font-bold text-gray-800 my-6">开发计划</h1>
         <p class="text-gray-600 max-w-2xl mx-auto text-sm">清晰的路线图，透明的开发进程，持续为防汛创造价值</p>
         <div class="w-24 h-1 bg-blue-600 mx-auto mt-6"></div>
     </div>
 
     <!-- 2. 阶段内容区域：用一个干净的容器包裹 -->
-    <div class="max-w-5xl mx-auto space-y-12">
+    <div class="space-y-12 mt-8">
         <!-- 阶段 1 -->
-        <div class="relative">
+        <div class="relative fade-up">
             <div class="flex items-center mb-6">
                 <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mr-4 shrink-0">
                     <span class="text-2xl">📡</span>
@@ -30,7 +30,8 @@
             </div>
 
             <!-- 阶段卡片 -->
-            <div class="ml-16 bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+            <div
+                class="ml-16 bg-white p-6 rounded-2xl shadow-lg border border-gray-100 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                 <div class="mb-4">
                     <div class="flex justify-between mb-2">
                         <span class="text-sm font-medium text-gray-600">完成进度</span>
@@ -38,7 +39,7 @@
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
                         <!-- 修正：给进度条加上具体的背景色类，而不是依赖 style -->
-                        <div class=" bg-green-400 to-green-600 h-3 rounded-full" style="width: 100%"></div>
+                        <div class="bg-green-400 h-3 rounded-full" style="width: 100%"></div>
                     </div>
                 </div>
 
@@ -63,7 +64,7 @@
         </div>
 
         <!-- 阶段 2 -->
-        <div class="relative">
+        <div class="relative fade-up">
             <div class="flex items-center mb-6">
                 <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-4 shrink-0">
                     <span class="text-2xl">📊</span>
@@ -78,14 +79,15 @@
                 </div>
             </div>
 
-            <div class="ml-16 bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+            <div
+                class="ml-16 bg-white p-6 rounded-2xl shadow-lg border border-gray-100 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                 <div class="mb-4">
                     <div class="flex justify-between mb-2">
                         <span class="text-sm font-medium text-gray-600">完成进度</span>
                         <span class="text-sm font-bold text-blue-600">100%</span>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                        <div class=" bg-blue-400 to-blue-600 h-3 rounded-full" style="width: 100%"></div>
+                        <div class="bg-blue-400 h-3 rounded-full" style="width: 100%"></div>
                     </div>
                 </div>
 
@@ -110,7 +112,7 @@
         </div>
 
         <!-- 阶段 3 -->
-        <div class="relative">
+        <div class="relative fade-up">
             <div class="flex items-center mb-6">
                 <div class="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center mr-4 shrink-0">
                     <span class="text-2xl">🚨</span>
@@ -125,15 +127,15 @@
                 </div>
             </div>
 
-            <div class="ml-16 bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+            <div
+                class="ml-16 bg-white p-6 rounded-2xl shadow-lg border border-gray-100 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                 <div class="mb-4">
                     <div class="flex justify-between mb-2">
                         <span class="text-sm font-medium text-gray-600">完成进度</span>
-                        <span class="text-sm font-bold text-gray-600">00%</span>
+                        <span class="text-sm font-bold text-gray-600">0%</span>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                        <div class=" from-gray-400 to-gray-600 h-3 rounded-full" style="width: 15%">
-                        </div>
+                        <div class="bg-gray-300 h-3 rounded-full" style="width: 0%"></div>
                     </div>
                 </div>
 
@@ -141,7 +143,7 @@
                     <h4 class="font-semibold text-gray-800 mb-4">即将推出的功能：</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div
-                            class="flex items-start p-4 border border-gray-200 rounded-xl hover:border-blue-300 transition">
+                            class="flex items-start p-4 border border-gray-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 hover:-translate-y-0.5 transition-all duration-200">
                             <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center mr-3 mt-1">
                                 <span>🔔</span>
                             </div>
@@ -152,7 +154,7 @@
                         </div>
 
                         <div
-                            class="flex items-start p-4 border border-gray-200 rounded-xl hover:border-blue-300 transition">
+                            class="flex items-start p-4 border border-gray-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 hover:-translate-y-0.5 transition-all duration-200">
                             <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center mr-3 mt-1">
                                 <span>📧</span>
                             </div>
@@ -163,7 +165,7 @@
                         </div>
 
                         <div
-                            class="flex items-start p-4 border border-gray-200 rounded-xl hover:border-blue-300 transition">
+                            class="flex items-start p-4 border border-gray-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 hover:-translate-y-0.5 transition-all duration-200">
                             <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center mr-3 mt-1">
                                 <span>📈</span>
                             </div>
@@ -174,7 +176,7 @@
                         </div>
 
                         <div
-                            class="flex items-start p-4 border border-gray-200 rounded-xl hover:border-blue-300 transition">
+                            class="flex items-start p-4 border border-gray-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 hover:-translate-y-0.5 transition-all duration-200">
                             <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center mr-3 mt-1">
                                 <span>🗺️</span>
                             </div>

@@ -1,9 +1,9 @@
-{% extends "base.html" %}
+{% extends "common/base.html" %}
 
 {% block title %}开发历程{% endblock %}
 
 {% block content %}
-<main class="w-4xl m-auto">
+<main class="w-4xl m-auto py-10">
     <div class="text-center mb-16">
         <h1 class="text-xl font-bold text-gray-800 my-8">开发历程</h1>
         <p class="text-gray-600 max-w-2xl mx-auto text-sm">记录鸠江水位小助手的每一次进化，见证技术迭代的力量</p>
@@ -18,9 +18,10 @@
 
         <div class="space-y-12">
             <!-- Item 1 -->
-            <div class="relative flex flex-col md:flex-row items-center">
+            <div class="relative flex flex-col md:flex-row items-center fade-up">
                 <div class="md:w-1/2 md:pr-12 mb-8 md:mb-0 md:text-right">
-                    <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition border border-gray-100">
+                    <div
+                        class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100">
                         <div class="flex items-center justify-end mb-4">
                             <span class="text-sm text-gray-500 mr-3">2024-04-28</span>
                             <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
@@ -40,7 +41,7 @@
             </div>
 
             <!-- Item 2 -->
-            <div class="relative flex flex-col md:flex-row items-center">
+            <div class="relative flex flex-col md:flex-row items-center fade-up">
                 <div class="md:w-1/2 md:pr-12 order-2 md:order-1"></div>
 
                 <div
@@ -48,7 +49,8 @@
                 </div>
 
                 <div class="md:w-1/2 md:pl-12 mb-8 md:mb-0 order-1 md:order-2">
-                    <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition border border-gray-100">
+                    <div
+                        class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100">
                         <div class="flex items-center mb-4">
                             <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-3">
                                 <span class="text-2xl">📊</span>
@@ -62,9 +64,10 @@
             </div>
 
             <!-- Item 3 -->
-            <div class="relative flex flex-col md:flex-row items-center">
+            <div class="relative flex flex-col md:flex-row items-center fade-up">
                 <div class="md:w-1/2 md:pr-12 mb-8 md:mb-0 md:text-right">
-                    <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition border border-gray-100">
+                    <div
+                        class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100">
                         <div class="flex items-center justify-end mb-4">
                             <span class="text-sm text-gray-500 mr-3">2024-06-23</span>
                             <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
@@ -84,7 +87,7 @@
             </div>
 
             <!-- Item 4 -->
-            <div class="relative flex flex-col md:flex-row items-center">
+            <div class="relative flex flex-col md:flex-row items-center fade-up">
                 <div class="md:w-1/2 md:pr-12 order-2 md:order-1"></div>
 
                 <div
@@ -92,7 +95,8 @@
                 </div>
 
                 <div class="md:w-1/2 md:pl-12 mb-8 md:mb-0 order-1 md:order-2">
-                    <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition border border-gray-100">
+                    <div
+                        class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100">
                         <div class="flex items-center mb-4">
                             <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-3">
                                 <span class="text-2xl">⛷</span>
@@ -106,10 +110,10 @@
             </div>
 
             <!-- Item 5 -->
-            <div class="relative flex flex-col md:flex-row items-center">
+            <div class="relative flex flex-col md:flex-row items-center fade-up">
                 <div class="md:w-1/2 md:pr-12 mb-8 md:mb-0 md:text-right">
                     <div
-                        class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition border border-gray-100 ring-2 ring-blue-200">
+                        class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100 ring-2 ring-blue-200">
                         <div class="flex items-center justify-end mb-4">
                             <span class="text-sm font-semibold text-blue-600 mr-3">最新更新</span>
                             <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
@@ -153,5 +157,4 @@
     </div>
 
 </main>
-
 {% endblock %}
