@@ -5,7 +5,7 @@ from abc import abstractmethod
 from openpyxl import load_workbook
 from openpyxl.styles import Font
 from src.settings import station_list, COLOR, Station
-from src.utils import Storage, Logger
+from src.utils import Logger, fetch_one
 
 
 log = Logger(__name__)
@@ -30,29 +30,27 @@ def today_or_yesterday(today, yesterday):
 # 数据库查询函数
 async def get_station_data(station: Station, target_datetime: datetime) -> float:
     formatted_date: str = target_datetime.strftime("%Y-%m-%d %H:%M:%S")
-    async with Storage() as storage:
-        sql: str = f"select (height) from station_{station.code} where ts = '{formatted_date}';"
-        log.debug(sql)
-        result = await storage.fetch_one(sql)
-        if result is None:
-            return 0
-        else:
-            return result
-    return 0
+    sql: str = f"select (height) from station_{station.code} where ts = '{formatted_date}';"
+    log.debug(sql)
+    result = await fetch_one(sql)
+    if result is None:
+        return 0
+    else:
+        return result
 
 # 时间描述的函数
 def generate_time_description(hour_diff: int) -> str:
-        now = datetime.now()
-        target_time = now - timedelta(hours=hour_diff)
-        target_date = target_time.date()
-        today = now.date()
-        yesterday = today - timedelta(days=1)
-        if target_date == today:
-            return "今日" + target_time.strftime("%H时")
-        elif target_date == yesterday:
-            return "昨日" + (target_time + timedelta(hours=24)).strftime("%H时")
-        else:
-            return target_time.strftime("%Y-%m-%d %H时")
+    now = datetime.now()
+    target_time = now - timedelta(hours=hour_diff)
+    target_date = target_time.date()
+    today = now.date()
+    yesterday = today - timedelta(days=1)
+    if target_date == today:
+        return "今日" + target_time.strftime("%H时")
+    elif target_date == yesterday:
+        return "昨日" + (target_time + timedelta(hours=24)).strftime("%H时")
+    else:
+        return target_time.strftime("%Y-%m-%d %H时")
 
 class DistXlsx:
 

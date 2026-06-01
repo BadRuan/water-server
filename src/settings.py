@@ -1,9 +1,20 @@
 from typing import List, Tuple, NamedTuple
 from enum import Enum
-from src.model import DataConfig, Station
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from src.model import Station
 
 
-postgres: DataConfig = DataConfig(url='100.122.72.21', user='postgres', password='E,*f*YdGgYSgqfze1tLqc0Pm8CK2', port=36999, database='water') 
+class Settings(BaseSettings):
+    DATABASE_URL: str = 'postgresql+asyncpg://user:pass@localhost:5432/dbname'
+    TIMEZONE: str = 'UTC'
+    
+    model_config = SettingsConfigDict(
+        env_file= '.env',
+        env_file_encoding= 'utf-8',
+        extra= 'ignore'
+    )
+    
+settings = Settings()
 
 class COLOR(Enum):
     Default = "000000"
