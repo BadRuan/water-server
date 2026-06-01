@@ -2,8 +2,11 @@ from typing import List, Dict, NamedTuple
 from datetime import datetime, timedelta
 from pathlib import Path
 from abc import abstractmethod
+from os.path import exists
+from os import remove
 from openpyxl import load_workbook
 from openpyxl.styles import Font
+from dateutil.relativedelta import relativedelta
 from src.settings import station_list, COLOR, Station
 from src.utils import Logger, fetch_one
 
@@ -14,10 +17,23 @@ class PathRecoder(NamedTuple):
     source: str
     dist: str
 
+def delete_file_if_exists(file_path: str) -> None:
+    if exists(file_path):
+        try:
+            remove(file_path)
+        except PermissionError:
+            log.error(f"权限不足，无法删除：{file_path}")
+        except Exception as e:
+            print(f"删除文件时发生未知错误：{file_path}")
+    else:
+        log.info(f"文件不存在，无需删除：{file_path}")
+
+
 def filePath(file_name: str) -> PathRecoder:
     base_dir = Path(__file__).resolve().parent.parent.parent
     source_path = base_dir / f"file/{file_name}.xlsx"
     dist_path = base_dir / f"dist/{file_name}.xlsx"
+    delete_file_if_exists(str(dist_path))
     return PathRecoder(source=str(source_path), dist=str(dist_path))
 
 def today_or_yesterday(today, yesterday):
@@ -94,12 +110,12 @@ class DistXlsx:
     async def write_cow_data(self, loc_list: List[str], target_datetimes: List[datetime]) -> None:
         # 为每个位置填充数据
         for column_item, target_datetime in zip(loc_list, target_datetimes): # example: [D5:D14]
+            log.debug(f'目标时间：{target_datetime}')
             start , end = column_item.split(':') # ('D5', 'D14')
             lie_head: str = start[0] # 'D'
             index_list = range(int(start[1:]), int(end[1:])+1) # range(5, 15) = [5, 6, ... , 14]
             for station, index in zip(station_list, index_list):
                 height: float = await get_station_data(station, target_datetime)
-                log.debug(f"Cell: {lie_head}{index} => {station.name} : {height}")
                 cell_location: str = lie_head + str(index)
                 self.write_to_cell(cell_location, height)
                 self.set_cell_style(cell_location, height, station)
@@ -120,12 +136,13 @@ class DistTable_1(DistXlsx):
     
     async def dist(self):
         self.write_date()
-
+        
+        now: datetime =  datetime.now().replace(hour=8, minute=0, second=0)
         target_datetimes: List[datetime] = [
-            datetime.now().replace(hour=8, minute=0, second=0),  # 今日 8:00
-            datetime.now().replace(hour=8, minute=0, second=0) - timedelta(days=1),  # 昨日 8:00
-            datetime.now().replace(hour=8, minute=0, second=0) - timedelta(weeks=1),  # 上周 8:00
-            datetime.now().replace(hour=8, minute=0, second=0) - timedelta(days=365),  # 去年今日 8:00
+            now,  # 今日 8:00
+            now - timedelta(days=1),  # 昨日 8:00
+            now - timedelta(weeks=1),  # 上周 8:00
+            now - relativedelta(years=1)  # 去年今日 8:00
         ]
         data_locs: List[str] = ["D5:D14", "E5:E14", "F5:F14", "G5:G14"]
         await self.write_cow_data(data_locs, target_datetimes)
@@ -180,11 +197,11 @@ class DistTable_4(DistXlsx):
     async def dist(self):
         self.write_date()
 
+        now: datetime =  datetime.now().replace(hour=8, minute=0, second=0)
         target_datetimes: List[datetime] = [
-            datetime.now().replace(hour=8, minute=0, second=0),  # 今日 8:00
-            datetime.now().replace(hour=8, minute=0, second=0) - timedelta(days=1),  # 昨日 8:00
-            datetime.now().replace(hour=8, minute=0, second=0) - timedelta(days=1),  # 昨日 8:00
-            datetime.now().replace(hour=8, minute=0, second=0) - timedelta(days=365),  # 去年今日 8:00
+            now,  # 今日 8:00
+            now - timedelta(days=1),  # 昨日 8:00
+            now - relativedelta(years=1)  # 去年今日 8:00
         ]
         data_locs: List[str] = ["D5:D14", "E5:E14", "G5:G14"]
         await self.write_cow_data(data_locs, target_datetimes)

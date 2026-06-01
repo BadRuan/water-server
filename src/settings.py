@@ -5,7 +5,7 @@ from src.model import Station
 
 
 class Settings(BaseSettings):
-    DATABASE_URL: str = 'postgresql+asyncpg://user:pass@localhost:5432/dbname'
+    DATABASE_URL: str = 'postgresql://user:pass@localhost:5432/dbname'
     TIMEZONE: str = 'UTC'
     
     model_config = SettingsConfigDict(

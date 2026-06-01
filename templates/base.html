@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo.ico') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <title>鸠江水位小助手 - {% block title %}{% endblock %}</title>
+
+</head>
+
+<body class="bg-background">
+    <header class="bg-white h-14">
+        <div class="w-4xl h-full mx-auto flex items-center justify-between">
+            <div class="md:flex">
+                <div class="w-full">
+                    <img src="{{ url_for('static', filename='logo.svg') }}" alt="logo" />
+                </div>
+            </div>
+            <nav class="flex gap-4 items-center">
+                <a class="w-20 group" href="/">
+                    <div class="text-gray-900 text-center text-base group-hover:text-primary-300">网站首页</div>
+                    <div class="text-gray-400 text-center text-xs group-hover:text-primary-400">Home Page</div>
+                </a>
+                <a class="w-20 group" href="/plan">
+                    <div class="text-gray-900 text-center text-base group-hover:text-primary-300">未来计划</div>
+                    <div class="text-gray-400 text-center text-xs group-hover:text-primary-400">Future Palns</div>
+                </a>
+                <a class="w-20 group" href="/history">
+                    <div class="text-gray-900 text-center text-base group-hover:text-primary-300">开发历程</div>
+                    <div class="text-gray-400 text-center text-xs group-hover:text-primary-400">Code History</div>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    {% block content %}{% endblock %}
+
+    <footer class="w-4xl m-auto my-8">
+        <div class="text-center text-gray-700 text-sm">Copyright © 2024-2026 鸠江水位小助手 | 阮福民 版权所有</div>
+        <div class="text-center text-gray-700 text-sm">邮箱：ruanfm@qq.com /
+            QQ:645187410</div>
+    </footer>
+
+</body>
+
+</html>
