@@ -49,5 +49,5 @@ async def get_recently_data() -> List[RecentlyBaseStation]:
         if isinstance(result, Exception):
             log.error(f"查询站点数据失败: {result}")
         elif result is not None:
-            recently_data.append(result)
+            recently_data.append(result) # type: ignore
     return recently_data
